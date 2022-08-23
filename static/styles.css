@@ -1,0 +1,24 @@
+/* Root Properties */
+:root {
+    font-size: 100%;
+    box-sizing: border-box;
+    --light-gray: #efefef;
+}
+
+/* Body Properties */
+body {
+    font-family: "Courier New", Courier, monospace;
+    background-color: var(--light-gray);
+}
+
+/* Inputs box shadow color */
+.form-control:hover,
+.form-control:active,
+.form-control:focus{
+    box-shadow: 0 0 01px 02px rgba(0, 0, 0, 0.2);
+}
+
+/* Light gray color for text */
+.text-light-gray {
+    color: var(--light-gray);
+}
