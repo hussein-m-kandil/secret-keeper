@@ -9,6 +9,7 @@
 body {
     font-family: "Courier New", Courier, monospace;
     background-color: var(--light-gray);
+    padding: 0;
 }
 
 /* Inputs box shadow color */

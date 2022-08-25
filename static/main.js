@@ -1,5 +1,17 @@
 // Empty Fields Handler.
 function handleEmptyInputs(submissionEvent, inputName, inputObj, errMessage) {
+    /*
+        - Usage: (Takes ? -> returns ?)
+            submissionEvent,
+            inputName,
+            inputObj,
+            errMessage -> True if there is no empty fields, Otherwise, False.
+
+        - Interp:
+            Handles the empty field by generating errors after every empty field.
+            Then, after every submission removes the error message if the input not empty.
+            And if the input still empty animating the error message.
+    */
     // Error Messages Generator.
     function errMessageGen(message, elementId){
         /*
@@ -66,6 +78,34 @@ function handleEmptyInputs(submissionEvent, inputName, inputObj, errMessage) {
     return emptyInputFlag;
 }
 
+// Show alerts above HTML 'main' block.
+function showAlertAboveTagName(message, alertId, tagNameToInsertAbove) {
+    /*
+        message, alertId, tagNameToInsertAbove
+        -->> Creates div for alert with dismiss button.
+        Then, show it to the user by putting it in the HTML page above the given tag name.
+    */
+    // Create div for alert.
+    let alertDiv = document.createElement("div");
+    alertDiv.setAttribute("id", alertId)
+    alertDiv.setAttribute("class", "alert alert-danger alert-dismissible fade show text-center")
+    alertDiv.textContent = message;
+    // Create button via which user can dismiss the alert.
+    let dismissBtn = document.createElement("button");
+    dismissBtn.setAttribute("type", "button");
+    dismissBtn.setAttribute("class", "btn-close");
+    dismissBtn.setAttribute("data-bs-dismiss", "alert");
+    dismissBtn.setAttribute("aria-label", "close");
+    alertDiv.appendChild(dismissBtn);
+    // Get main element to prepend the alert before it.
+    let mainElement = document.querySelector(tagNameToInsertAbove);
+    if (mainElement) {
+        mainElement.before(alertDiv);
+        return true;
+    }
+    return false;
+}
+
 // Handle all checks for empty inputs with all submissions.
 addEventListener("submit", function(e) {
 
@@ -99,19 +139,41 @@ addEventListener("submit", function(e) {
             }
             if (!usernameIsEmpty && !passwordIsEmpty) {
                 e.preventDefault();
-                let routes = this.document.getElementById("routes");
-                console.log("routes => ", routes.dataset["login"].replace(/['"]+/g, ''));
-                console.log("url => ", url.replace(/['"]+/g, ''));
+                // let routes = this.document.getElementById("routes");
                 const formData = new FormData(form);
-                this.fetch(url.replace(/['"]+/g, ''), {
+                this.fetch(URL["login"].replace(/[''""\s]/g, ''), {
                     "method": "POST",
                     "body": formData,
                 }).then(function(response) {
                     if (response.redirected) {
-                        window.location = response.url;
+                        // window.location = response.url;
+                        // Get the URL for the redirection.
+                        const direction = response.url;
+                        const directionLen = direction.length;
+                        let route = "";
+                        let i = directionLen - 1;
+                        // Extract the final route from URL.
+                        while (i >= 0) {
+                            if (direction[i] == '/') {
+                                route = direction.slice(i, directionLen);
+                                break;
+                            }
+                            i--;
+                        }
+                        // If redirection to same route show alert to user.
+                        if (URL["login"].replace(/[''""\s]/g, '') == route) {
+                            showAlertAboveTagName(
+                                "Check your inputs (username/password) and try again.",
+                                "invalid-input",
+                                "main"
+                            );
+                        }
                     } else {
-                        console.log(response);
-                        console.log("Check your inputs (username/password) and try again!");
+                        showAlertAboveTagName(
+                            "Somthing Wrong!",
+                            "somthing-wrong",
+                            "main"
+                        );
                     }
                 });
                 usernameIsEmpty = false;
