@@ -69,6 +69,6 @@ def generate_password(pass_len=16, upper=True, lower=True, nums=True, punc=True)
 
     return password
 
-# TEST:
-print(generate_password(16, True, True, True, True))
+# # TEST:
+# print(generate_password(16, True, True, True, True))
 
