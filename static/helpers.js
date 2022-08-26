@@ -106,5 +106,15 @@ function showAlertAboveTagName(message, alertId, tagNameToInsertAbove) {
     return false;
 }
 
+// Regex pattern for password.
+const passwordRegex = /(?=.*\d)(?=.*[a-z]).{8,}/i;
+// Regex pattern for " ' and white spaces.
+const sanitizerRegex = /[^\w-]/g;
 
-export { handleEmptyInputs, showAlertAboveTagName };
+
+export {
+    handleEmptyInputs,
+    showAlertAboveTagName,
+    passwordRegex,
+    sanitizerRegex
+};

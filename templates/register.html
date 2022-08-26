@@ -1,0 +1,22 @@
+
+{% extends "layout.html" %}
+
+{% block title %}
+    Registeration
+{% endblock %}
+
+{% block main %}
+    <form id="registeration" name="registeration" action="/register" method="post">
+        <div class="mb-3">
+            <input autocomplete="off" autofocus class="form-control mx-auto w-auto" id="username" name="username" placeholder="Username" type="text">
+        </div>
+        <div class="mb-3">
+            <input class="form-control mx-auto w-auto" id="password" name="password" placeholder="Password" type="password" pattern="(?=.*\d)(?=.*[a-zA-Z]).{8,}" title="Your password MUST contain at least 8 CHARACTERS including at least one NUMBER and one LETTER.">
+        </div>
+        <div class="mb-3">
+            <input class="form-control mx-auto w-auto" id="confirmation" name="confirmation" placeholder="Confirm Password" type="password" pattern="(?=.*\d)(?=.*[a-zA-Z]).{8,}" title="Your password MUST contain at least 8 CHARACTERS including at least one NUMBER and one LETTER.">
+        </div>
+        <button class="btn btn-dark" type="submit" form="registeration">Submit</button>
+    </form>
+{% endblock %}
+
