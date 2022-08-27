@@ -1,3 +1,38 @@
+// Error Messages Generator.
+function errMessageGen(message, elementId){
+    /*
+        Str 'message' -> Element.
+        Str 'elementId' -> Element's id attribute.
+        Takes string message and returns a 'p' element,
+        for Document use (e.g. input for 'element.after()').
+    */
+    let warning = document.createElement("p");
+    warning.textContent = message;
+    warning.setAttribute("class", "text-danger fw-lighter mx-auto w-50")
+    warning.setAttribute("id", elementId)
+    warning.style.fontSize = "0.75rem";
+    warning.style.margin = "auto";
+    warning.style.textAlign = "left";
+
+    return warning;
+}
+
+// Error Messages Animator.
+function errMessageAnimy(errMessageObj) {
+    /*
+        ElementObj -> (exists) true : flase;
+        will make the element bigger the turn it back after 750 msec.
+    */
+    if (errMessageObj) {
+        errMessageObj.style.fontSize = "1.5rem";
+        setTimeout(function() {
+            errMessageObj.style.fontSize = "1rem";
+        }, 750);
+        return true;
+    }
+    return false;
+}
+
 // Empty Fields Handler.
 function handleEmptyInputs(submissionEvent, inputName, inputObj, errMessage) {
     /*
@@ -12,40 +47,10 @@ function handleEmptyInputs(submissionEvent, inputName, inputObj, errMessage) {
             Then, after every submission removes the error message if the input not empty.
             And if the input still empty animating the error message.
     */
-    // Error Messages Generator.
-    function errMessageGen(message, elementId){
-        /*
-            Str 'message' -> Element.
-            Str 'elementId' -> Element's id attribute.
-            Takes string message and returns a 'p' element,
-            for Document use (e.g. input for 'element.after()').
-        */
-        let warning = document.createElement("p");
-        warning.textContent = message;
-        warning.setAttribute("class", "text-danger fw-lighter")
-        warning.setAttribute("id", elementId)
-        warning.style.fontSize = "1rem";
-        return warning;
-    }
-
-    // Error Messages Animator.
-    function errMessageAnimy(errMessageObj) {
-        /*
-            ElementObj -> (exists) true : flase;
-            will make the element bigger the turn it back after 750 msec.
-        */
-        if (errMessageObj) {
-            errMessageObj.style.fontSize = "1.5rem";
-            setTimeout(function() {
-                errMessageObj.style.fontSize = "1rem";
-            }, 750);
-            return true;
-        }
-        return false;
-    }
-
     // Flag for empty input.
     let emptyInputFlag = false;
+    // Get the validation error message if exists.
+    const valErrObj = document.getElementById(`${inputName}-val-err`);
     // Get the error message if exists.
     const errObj = document.getElementById(`${inputName}-err`);
     if (inputObj.value == "") {
@@ -53,6 +58,10 @@ function handleEmptyInputs(submissionEvent, inputName, inputObj, errMessage) {
         submissionEvent.preventDefault();
         // Check for username field.
         if (inputObj.name == inputName) {
+            // Check for validation error.
+            if (valErrObj) {
+                valErrObj.style.display = "none";
+            }
             // Animate the error message if exists.
             if (errObj) {
                 errObj.style.display = "block";
@@ -106,6 +115,58 @@ function showAlertAboveTagName(message, alertId, tagNameToInsertAbove) {
     return false;
 }
 
+// Function to check for empty inputs.
+function isEmptyInput(form, inputName, e, message) {
+    // Get the length of the form.
+    const formLen = form.length;
+    // Make index counter in order to loop for each element in the form.
+    let i = formLen - 1;
+    while (i >= 0) {
+        // Check for input's name.
+        if (form[i].name == inputName) {
+            // Check weather is not empty input and if not return its value.
+            if (!handleEmptyInputs(e, inputName, form[i], message)) {
+                return form[i].value;
+            } else {
+                // Otherwise, return false.
+                return false;
+            };
+        }
+        // Decrement the form index.
+        i--;
+    };
+};
+
+// Validate the password input.
+function handleValidationErr(validElementId, inputName, message) {
+    /*
+        - Usage:
+            validElementId, inputName and message -> true;
+        -Interp:
+            Generates password validation error and if the error exists animates it.
+            Always returns true.
+    */
+    // Get empty input error message if exists.
+    const emptyErrObj = document.getElementById(`${inputName}-err`);
+    // Get validation error message if exists.
+    const errObj = document.getElementById(`${inputName}-val-err`);
+    // Check for empty input error message.
+    if (emptyErrObj) {
+        emptyErrObj.style.display = "none";
+    }
+    // Create new validation error message if there is no one, Otherwise animate it.
+    if (!errObj) {
+        let valErr = errMessageGen(message, `${inputName}-val-err`);
+        const passElement = document.getElementById(validElementId);
+        passElement.after(valErr);
+
+    } else {
+        errObj.style.display = "block";
+        errMessageAnimy(errObj);
+    };
+    return true;
+};
+
 // Regex pattern for password.
 const passwordRegex = /(?=.*\d)(?=.*[a-z]).{8,}/i;
 // Regex pattern for " ' and white spaces.
@@ -113,8 +174,12 @@ const sanitizerRegex = /[^\w-]/g;
 
 
 export {
+    errMessageGen,
+    errMessageAnimy,
     handleEmptyInputs,
     showAlertAboveTagName,
     passwordRegex,
-    sanitizerRegex
+    sanitizerRegex,
+    isEmptyInput,
+    handleValidationErr
 };

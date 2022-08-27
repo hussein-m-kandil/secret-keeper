@@ -1,11 +1,11 @@
 import { loginValidation } from "./login_validation.js";
-import { loginValidation, registerValidation } from "./register_validation.js";
+import { registerValidation } from "./register_validation.js";
 
 
 // Handle all checks for empty inputs with all submissions.
 addEventListener("submit", function(e) {
 
-    // e.preventDefault();
+    e.preventDefault();
 
     // Check for forms.
     if (e.target.nodeName == "FORM") {

@@ -1,41 +1,17 @@
 import {
-    handleEmptyInputs,
     showAlertAboveTagName,
-    passwordRegex,
-    sanitizerRegex
+    sanitizerRegex,
+    isEmptyInput
 } from "./helpers.js";
 
 // Login form validation.
 function loginValidation(form, e) {
 
-    const formLen = form.length
-    // Flags for USERNAME/PASSWORD existness.
-    let usernameIsEmpty = false;
-    let passwordIsEmpty = false;
     // Placeholders for USERNAME & PASSWORD.
-    let username = "";
-    let password = "";
-    // Catching empty fields
-    for (let i = 0; i < formLen; i++) {
-        // Submission element exception.
-        if (form[i].type != "submit") {
-            // Handle empty username/password.
-            if (form[i].name == "username") {
-                usernameIsEmpty = handleEmptyInputs(
-                    e, "username", form[i], "ENTER USERNAME!"
-                );
-                // Get username.
-                username = (!usernameIsEmpty) ? form[i].value : "";
-            } else if (form[i].name == "password") {
-                passwordIsEmpty = handleEmptyInputs(
-                    e, "password", form[i], "ENTER PASSWORD!"
-                );
-                // Get password.
-                password = (!passwordIsEmpty) ? form[i].value : "";
-            }
-        }
-    }
-    if (!usernameIsEmpty && !passwordIsEmpty) {
+    let username = isEmptyInput(form, "username", e, "ENTER USERNAME!");
+    let password = isEmptyInput(form, "password", e, "ENTER PASSWORD!");
+    // Submit the request.
+    if (username && password) {
         e.preventDefault();
         const formData = new FormData();
         // Sanitize the username input's data and append it with password.
@@ -46,7 +22,6 @@ function loginValidation(form, e) {
             "body": formData,
         }).then(function(response) {
             if (response.redirected) {
-                // window.location = response.url;
                 // Get the URL for the redirection.
                 const direction = response.url;
                 const directionLen = direction.length;
@@ -69,7 +44,9 @@ function loginValidation(form, e) {
                         "invalid-input",
                         "main"
                     );
-                }
+                } else {
+                    window.location = response.url;
+                };
             } else {
                 showAlertAboveTagName(
                     "Somthing Wrong!",
@@ -78,8 +55,6 @@ function loginValidation(form, e) {
                 );
             }
         });
-        usernameIsEmpty = false;
-        passwordIsEmpty = false;
     }
     return true;
 };
