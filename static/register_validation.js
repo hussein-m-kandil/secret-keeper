@@ -3,6 +3,7 @@ import {
     errMessageAnimy,
     handleEmptyInputs,
     showAlertAboveTagName,
+    usernameRegex,
     passwordRegex,
     sanitizerRegex,
     isEmptyInput,
@@ -22,17 +23,17 @@ function registerValidation(form, e) {
     let passConfirmIsMatch = false;
     // Check username validation.
     if (username) {
-        if (sanitizerRegex.test(username)) {
+        if (!usernameRegex.test(username)) {
             handleValidationErr(
                 "username",
                 "username",
-                "Alphanumeric Characters and Hyphens/Underscores only, NO SPACES, (e.g. a-z A-Z 0-9 _ -)."
+                "4-28 Characters has Lowercase Letters, Numbers and Hyphens/Underscores only (NO SPACES)."
             );
             isValidUserName = false;
         } else {
             isValidUserName = true;
             // Remove any validation error messages if exists.
-            let valErr = document.getElementById("password-val-err");
+            let valErr = document.getElementById("username-val-err");
             if (valErr) {
                 valErr.style.display = "none";
             }
@@ -117,12 +118,12 @@ function registerValidation(form, e) {
                 // If redirection to same route show alert to user.
                 if (URL["register"].replace(sanitizerRegex, '') == route) {
                     showAlertAboveTagName(
-                        "Sorry, can't use this name!",
+                        "Sorry, you can't use this name!",
                         "invalid-username",
                         "main"
                     );
                 } else {
-                    window.location.href = response.url;
+                    // window.location.href = response.url;
                 };
             } else {
                 showAlertAboveTagName(

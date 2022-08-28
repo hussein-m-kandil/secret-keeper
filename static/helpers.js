@@ -24,9 +24,9 @@ function errMessageAnimy(errMessageObj) {
         will make the element bigger the turn it back after 750 msec.
     */
     if (errMessageObj) {
-        errMessageObj.style.fontSize = "1.5rem";
+        errMessageObj.style.fontSize = "1.2rem";
         setTimeout(function() {
-            errMessageObj.style.fontSize = "1rem";
+            errMessageObj.style.fontSize = "0.75rem";
         }, 750);
         return true;
     }
@@ -167,6 +167,8 @@ function handleValidationErr(validElementId, inputName, message) {
     return true;
 };
 
+// Regex pattern for username.
+const usernameRegex = /^[a-z][a-z0-9_-]{3,27}$/;
 // Regex pattern for password.
 const passwordRegex = /(?=.*\d)(?=.*[a-z]).{8,}/i;
 // Regex pattern for " ' and white spaces.
@@ -178,6 +180,7 @@ export {
     errMessageAnimy,
     handleEmptyInputs,
     showAlertAboveTagName,
+    usernameRegex,
     passwordRegex,
     sanitizerRegex,
     isEmptyInput,
