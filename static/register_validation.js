@@ -1,6 +1,4 @@
 import {
-    errMessageGen,
-    errMessageAnimy,
     handleEmptyInputs,
     showAlertAboveTagName,
     usernameRegex,
@@ -98,44 +96,33 @@ function registerValidation(form, e) {
         fetch(URL["register"].replace(sanitizerRegex, ''), {
             "method": "POST",
             "body": formData,
+            "credentials": "same-origin",
         }).then(function(response) {
             if (response.redirected) {
-                // Get the URL for the redirection.
-                const direction = response.url;
-                const directionLen = direction.length;
-                let route = "";
-                let i = directionLen - 1;
-                // Extract the final route from URL.
-                while (i >= 0) {
-                    if (direction[i] == '/') {
-                        route = direction.slice(
-                            i, directionLen
-                        ).replace(sanitizerRegex, '');
-                        break;
-                    }
-                    i--;
-                }
-                // If redirection to same route show alert to user.
-                if (URL["register"].replace(sanitizerRegex, '') == route) {
-                    showAlertAboveTagName(
-                        "Sorry, you can't use this name!",
-                        "invalid-username",
-                        "main"
-                    );
-                } else {
-                    // window.location.href = response.url;
-                };
-            } else {
-                showAlertAboveTagName(
-                    "Oops, Somthing Wrong!",
-                    "somthing-wrong",
-                    "main"
-                );
+                // If redirected follow the new location.
+                window.location.href = response.url;
+            } else if (!response.redirected) {
+                // If NOT redirected parse the response and looke for 'userExist' key.
+                response.json().then(function(obj) {
+                    if (obj.nameExist) {
+                        showAlertAboveTagName(
+                            "Sorry, you can't use this name!",
+                            "invalid-username",
+                            "main"
+                        );
+                    } else {
+                        showAlertAboveTagName(
+                            "Oops, Somthing Wrong!",
+                            "server-error",
+                            "main"
+                        );
+                    };
+                });
             }
         }).catch(function(err) {
             showAlertAboveTagName(
                 "Oops, Somthing Wrong!",
-                "somthing-wrong",
+                "server-error",
                 "main"
             );
         });
