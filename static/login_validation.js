@@ -20,6 +20,7 @@ function loginValidation(form, e) {
         fetch(URL["login"].replace(sanitizerRegex, ''), {
             "method": "POST",
             "body": formData,
+            "credentials": "same-origin",
         }).then(function(response) {
             if (response.redirected) {
                 // If redirected follow the new location.

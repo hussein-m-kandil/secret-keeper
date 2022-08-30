@@ -28,7 +28,7 @@
                 <div class="collapse navbar-collapse" id="navbar">
                     {% if session["user_id"] %}
                         <ul class="navbar-nav me-auto mt-2">
-                            <li class="nav-item mx-2"><a class="nav-link" href="/gen-pass">Generate Secret</a></li>
+                            <li class="nav-item mx-2"><a class="nav-link" href="/passwordGenerator">Generate Secret</a></li>
                             <li class="nav-item mx-2"><a class="nav-link" href="/">My Secrets</a></li>
                         </ul>
                         <ul class="navbar-nav ms-auto mt-2">
@@ -51,7 +51,7 @@
                 </div>
             </header>
         {% endif %}
-        <main class="container-fluid py-5 text-center">
+        <main class="container-fluid py-5">
             {% block main %}{% endblock %}
         </main>
         <footer class="mb-5 small text-center text-muted">
