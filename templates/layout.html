@@ -28,7 +28,7 @@
                 <div class="collapse navbar-collapse" id="navbar">
                     {% if session["user_id"] %}
                         <ul class="navbar-nav me-auto mt-2">
-                            <li class="nav-item mx-2"><a class="nav-link" href="/passwordGenerator">Generate Secret</a></li>
+                            <li class="nav-item mx-2"><a class="nav-link" href="/secretGenerator">Generate Secret</a></li>
                             <li class="nav-item mx-2"><a class="nav-link" href="/">My Secrets</a></li>
                         </ul>
                         <ul class="navbar-nav ms-auto mt-2">
@@ -60,7 +60,6 @@
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
 
-        <!-- <div id="routes" data-login='{{ url_for("login") | tojson }}'></div> -->
         <script>
             const URL = {
                             login: '{{ url_for("login") | tojson }}',
@@ -68,6 +67,8 @@
                             root: '{{ url_for("index") | tojson }}',
                             logout: '{{ url_for("logout") | tojson }}',
                             password: '{{ url_for("change_password") | tojson }}',
+                            secretGen: '{{ url_for("secret_generator") | tojson }}',
+                            saveSecret: '{{ url_for("save_secret") | tojson }}',
                         };
         </script>
         <script src="../static/main.js" type="module"></script>

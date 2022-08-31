@@ -44,6 +44,7 @@ function loginValidation(form, e) {
                 });
             }
         }).catch(function(err) {
+            console.log(err);
             showAlertAboveTagName(
                 "Oops, Somthing Wrong!",
                 "server-error",
