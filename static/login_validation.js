@@ -34,12 +34,22 @@ function loginValidation(form, e) {
                         "invalid-user-data",
                         "main"
                         );
+                        // Scroll to top.
+                        // For Safari.
+                        document.body.scrollTop = 0;
+                        // For Chrome, Firefox, IE and Opera.
+                        document.documentElement.scrollTop = 0;
                     } else {
                         showAlertAboveTagName(
                             "Oops, Somthing Wrong!",
                             "server-error",
                             "main"
                         );
+                        // Scroll to top.
+                        // For Safari.
+                        document.body.scrollTop = 0;
+                        // For Chrome, Firefox, IE and Opera.
+                        document.documentElement.scrollTop = 0;
                     };
                 });
             }
@@ -50,6 +60,11 @@ function loginValidation(form, e) {
                 "server-error",
                 "main"
             );
+            // Scroll to top.
+            // For Safari.
+            document.body.scrollTop = 0;
+            // For Chrome, Firefox, IE and Opera.
+            document.documentElement.scrollTop = 0;
         });
     }
     return true;

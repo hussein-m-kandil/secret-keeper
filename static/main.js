@@ -1,10 +1,10 @@
 import { loginValidation } from "./login_validation.js";
 import { registerValidation } from "./register_validation.js";
-import {
-    passGenHandler,
+import {passGenHandler,
     getGenPass,
     saveSecretByValidName
 } from "./password_gen_handler.js";
+import { showAlertAboveTagName } from "./helpers.js";
 
 
 // Handle all checks for empty inputs with all submissions.
@@ -35,11 +35,11 @@ addEventListener("submit", function(e) {
 
 });
 
-// Secrets Generator.
+// Get Current Page Title.
 let pageTitle = document.querySelector("title");
+
+// Secrets Generator.
 if (pageTitle.innerText == "Secret Keeper: Secrets Generator") {
     passGenHandler();
 }
-
-
 

@@ -7,11 +7,115 @@ import {
     passwordRegex,
     sanitizerRegex,
     isEmptyInput,
-    handleValidationErr
+    handleValidationErr,
+    secretNameRegex
 } from "./helpers.js";
 
 // Validate the name of the secret and save it if valid.
-function saveSecretByValidName(form, e) {};
+function saveSecretByValidName(form, e) {
+    // Check for empty secret name.
+    let secretName = isEmptyInput(form, "pass-gen-name", e, "DESCRIPTIVE NAME IS MISSING!");
+    // Check username validation.
+    let isValidSecretName = false;
+    if (secretName) {
+        if (!secretNameRegex.test(secretName)) {
+            handleValidationErr(
+                "pass-gen-name",
+                "pass-gen-name",
+                "4-128 Characters has Lowercase/Uppercase Letters, Numbers and Spaces/Underscores."
+            );
+            isValidSecretName = false;
+        } else {
+            isValidSecretName = true;
+            // Remove any validation error messages if exists.
+            let valErr = document.getElementById("pass-gen-name-val-err");
+            if (valErr) {
+                valErr.style.display = "none";
+            }
+        }
+    }
+    // Submit the request.
+    if (secretName && isValidSecretName) {
+        e.preventDefault();
+        const formData = new FormData();
+        // Sanitize the username input's data and append it with password.
+        formData.append("secret-name", secretName);
+        formData.append("secret", form["gen-pass"].value);
+        fetch(URL["saveSecret"].replace(sanitizerRegex, ''), {
+            "method": "POST",
+            "body": formData,
+            "credentials": "same-origin",
+        }).then(function(response) {
+            if (response.redirected) {
+                // If redirected follow the new location.
+                window.location.href = response.url;
+            } else if (!response.redirected) {
+                // If NOT redirected parse the response and looke for 'userExist' key.
+                response.json().then(function(obj) {
+                    if (obj.invalidData) {
+                        showAlertAboveTagName(
+                            "Oops, Somthing Wrong, check your inputs and try again.",
+                            "invalid-inputs-error",
+                            "main"
+                        );
+                        // Scroll to top.
+                        // For Safari.
+                        document.body.scrollTop = 0;
+                        // For Chrome, Firefox, IE and Opera.
+                        document.documentElement.scrollTop = 0;
+                    } else if (obj.sameNameExist) {
+                        showAlertAboveTagName(
+                            "Sorry! you can't use same secret name twice.",
+                            "same-name-error",
+                            "main"
+                        );
+                        // Scroll to top.
+                        // For Safari.
+                        document.body.scrollTop = 0;
+                        // For Chrome, Firefox, IE and Opera.
+                        document.documentElement.scrollTop = 0;
+                    } else if (obj.databaseErr) {
+                        showAlertAboveTagName(
+                            "Oops, Somthing Wrong, Cant save the secret.",
+                            "databas-error",
+                            "main"
+                        );
+                        // Scroll to top.
+                        // For Safari.
+                        document.body.scrollTop = 0;
+                        // For Chrome, Firefox, IE and Opera.
+                        document.documentElement.scrollTop = 0;
+                    } else {
+                        showAlertAboveTagName(
+                            "Oops, Somthing Wrong!",
+                            "server-error",
+                            "main"
+                        );
+                        // Scroll to top.
+                        // For Safari.
+                        document.body.scrollTop = 0;
+                        // For Chrome, Firefox, IE and Opera.
+                        document.documentElement.scrollTop = 0;
+                    };
+                });
+            }
+        }).catch(function(err) {
+            console.log(err);
+            showAlertAboveTagName(
+                "Oops, Somthing Wrong!",
+                "server-error",
+                "main"
+            );
+            // Scroll to top.
+            // For Safari.
+            document.body.scrollTop = 0;
+            // For Chrome, Firefox, IE and Opera.
+            document.documentElement.scrollTop = 0;
+        });
+        // Reset all flags.
+        isValidSecretName = false;
+    }
+};
 
 // Get the new Generated password from Flask.
 function getGenPass(form, e) {
@@ -38,12 +142,22 @@ function getGenPass(form, e) {
                     "invalid-inputs-error",
                     "main"
                 );
+                // Scroll to top.
+                // For Safari.
+                document.body.scrollTop = 0;
+                // For Chrome, Firefox, IE and Opera.
+                document.documentElement.scrollTop = 0;
             } else {
                 showAlertAboveTagName(
                     "Oops, Somthing Wrong!",
                     "server-error",
                     "main"
                 );
+                // Scroll to top.
+                // For Safari.
+                document.body.scrollTop = 0;
+                // For Chrome, Firefox, IE and Opera.
+                document.documentElement.scrollTop = 0;
             };
         });
     }).catch(function(err) {
@@ -53,6 +167,11 @@ function getGenPass(form, e) {
             "server-error",
             "main"
         );
+        // Scroll to top.
+        // For Safari.
+        document.body.scrollTop = 0;
+        // For Chrome, Firefox, IE and Opera.
+        document.documentElement.scrollTop = 0;
     });
 };
 

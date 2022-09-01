@@ -173,6 +173,8 @@ const usernameRegex = /^[a-z][a-z0-9_-]{3,27}$/;
 const passwordRegex = /(?=.*\d)(?=.*[a-z]).{8,}/i;
 // Regex pattern for " ' and white spaces.
 const sanitizerRegex = /[^\w-]/g;
+// Regex pattern for secret name.
+const secretNameRegex = /^[a-zA-Z][\w -]{3,127}$/;
 
 
 export {
@@ -184,5 +186,6 @@ export {
     passwordRegex,
     sanitizerRegex,
     isEmptyInput,
-    handleValidationErr
+    handleValidationErr,
+    secretNameRegex
 };

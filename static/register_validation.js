@@ -110,12 +110,33 @@ function registerValidation(form, e) {
                             "invalid-username",
                             "main"
                         );
+                        // Scroll to top.
+                        // For Safari.
+                        document.body.scrollTop = 0;
+                        // For Chrome, Firefox, IE and Opera.
+                        document.documentElement.scrollTop = 0;
+                    } else if (obj.databaseErr) {
+                        showAlertAboveTagName(
+                            "Oops, Somthing Wrong, Can't insert to DataBase.",
+                            "databas-error",
+                            "main"
+                        );
+                        // Scroll to top.
+                        // For Safari.
+                        document.body.scrollTop = 0;
+                        // For Chrome, Firefox, IE and Opera.
+                        document.documentElement.scrollTop = 0;
                     } else {
                         showAlertAboveTagName(
                             "Oops, Somthing Wrong!",
                             "server-error",
                             "main"
                         );
+                        // Scroll to top.
+                        // For Safari.
+                        document.body.scrollTop = 0;
+                        // For Chrome, Firefox, IE and Opera.
+                        document.documentElement.scrollTop = 0;
                     };
                 });
             }
@@ -126,6 +147,11 @@ function registerValidation(form, e) {
                 "server-error",
                 "main"
             );
+            // Scroll to top.
+            // For Safari.
+            document.body.scrollTop = 0;
+            // For Chrome, Firefox, IE and Opera.
+            document.documentElement.scrollTop = 0;
         });
         // Reset all flags.
         isValidUserName = false;
