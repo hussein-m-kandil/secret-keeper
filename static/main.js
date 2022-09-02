@@ -1,5 +1,6 @@
 import { loginValidation } from "./login_validation.js";
 import { registerValidation } from "./register_validation.js";
+import { changePassValidation } from "./change_pass_validation.js";
 import {passGenHandler,
     getGenPass,
     saveSecretByValidName
@@ -23,6 +24,10 @@ addEventListener("submit", function(e) {
         // Catch registeration form.
         else if (form.name == "registeration") {
             registerValidation(form, e);
+        }
+        // Catch change password form.
+        else if (form.name == "change-password") {
+            changePassValidation(form, e);
         }
         // Catch password generator form.
         else if (form.name == "pass-gen-form") {

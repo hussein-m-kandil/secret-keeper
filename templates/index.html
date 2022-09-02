@@ -1,0 +1,26 @@
+{% extends "layout.html" %}
+
+{% block title %}Secrets{% endblock %}
+
+{% block main %}
+    <div class="row row-cols-1 col-8 col-md-6 col-lg-4 mx-auto text-center">
+        {% if username %}
+            <p class="fs-5 fw-light">Hello, {{ username }}!</p>
+        {% endif %}
+        <h1 class="my-4 fs-1 fw-bold text-center">Your Secrets</h1>
+        <form  id="secrets" name="secrets" action="/secrets" method="post">
+            <div class="my-3">
+                <select class="form-select form-select-lg" aria-label=".form-select-lg Secrets" name="symbol">
+                    <option disabled selected>Secret Name</option>
+                        {% for stock in current_stocks %}
+                        <option value={{ stock["symbol"] }}>{{ stock["symbol"] }}</option>
+                        {% endfor %}
+                </select>
+            </div>
+            <div class="col text-center mb-4">
+                <input class="form-control-plaintext border border-1 border-dark rounded text-center mx-auto fs-5" name="gen-pass" id="gen-pass" type="text" value="Secret will apear here." aria-label="Generated Password" readonly />
+            </div>
+            <button class="btn btn-dark" type="submit" form="secrets">Reveal</button>
+        </form>
+    </div>
+{% endblock %}

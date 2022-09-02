@@ -44,13 +44,22 @@
                 </div>
             </div>
         </nav>
-        {% if get_flashed_messages() %}
+        {% if get_flashed_messages(category_filter=["success"]) %}
             <header>
                 <div class="alert alert-success alert-dismissible fade show text-center" role="alert">
                     {{ get_flashed_messages() | join(" ") }}
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="close"></button>
                 </div>
             </header>
+            {% else %}
+                {% if get_flashed_messages() %}
+                    <header>
+                        <div class="alert alert-danger alert-dismissible fade show text-center" role="alert">
+                            {{ get_flashed_messages() | join(" ") }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="close"></button>
+                        </div>
+                    </header>
+                {% endif %}
         {% endif %}
         <main class="container-fluid py-5">
             {% block main %}{% endblock %}
