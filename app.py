@@ -60,7 +60,10 @@ def index():
         i -= 1
     if route == "/register":
         return render_template("index.html", username=username)
-    return render_template("index.html")
+    # Get user secrets.
+    secrets = db.execute("SELECT * FROM secrets WHERE user_id = ?", u_id)
+    #return secrets page.
+    return render_template("index.html", secrets=secrets)
 
 
 @app.route("/login", methods=["GET", "POST"])

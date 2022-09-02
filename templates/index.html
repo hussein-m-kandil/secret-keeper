@@ -10,17 +10,38 @@
         <h1 class="my-4 fs-1 fw-bold text-center">Your Secrets</h1>
         <form  id="secrets" name="secrets" action="/secrets" method="post">
             <div class="my-3">
-                <select class="form-select form-select-lg" aria-label=".form-select-lg Secrets" name="symbol">
+                <select class="form-select form-select-lg" aria-label=".form-select-lg Secrets" name="menu" id="menu">
                     <option disabled selected>Secret Name</option>
-                        {% for stock in current_stocks %}
-                        <option value={{ stock["symbol"] }}>{{ stock["symbol"] }}</option>
-                        {% endfor %}
+                    {% for secret in secrets %}
+                        <option value='{{ secret["secret"] }}'>{{ secret["secret_name"] }}</option>
+                    {% endfor %}
                 </select>
             </div>
             <div class="col text-center mb-4">
-                <input class="form-control-plaintext border border-1 border-dark rounded text-center mx-auto fs-5" name="gen-pass" id="gen-pass" type="text" value="Secret will apear here." aria-label="Generated Password" readonly />
+                <input class="form-control-plaintext border border-1 border-dark rounded text-center mx-auto fs-5" name="secret" id="secret" type="text" value="Secret will apear here." aria-label="Secret" readonly />
             </div>
-            <button class="btn btn-dark" type="submit" form="secrets">Reveal</button>
+            <button class="btn btn-dark" type="submit" form="secrets">Delete Secret</button>
         </form>
-    </div>
+        <div id="del-secret-modal" class="modal" tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 id="del-secret-header" class="modal-title"></h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p id="del-warn-msg" class="text-start"></p>
+                    </div>
+                    <div class="modal-footer">
+                        <form name="del-secret-form" id="del-secret-form" method="post">
+                            <input type="hidden" id="del-secret-name" name="del-secret-name" value="" />
+                            <input type="hidden" id="del-secret-val" name="del-secret-val" value="" />
+                            <button type="button" class="btn btn-dark mx-1" data-bs-dismiss="modal">Cancel</button>
+                            <button type="submit" form="del-secret-form" class="btn btn-danger mx-1">Delete</button>
+                        </form>
+                    </div>
+            </div>
+        </div>
+        </div>
+</div>
 {% endblock %}

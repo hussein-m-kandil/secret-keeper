@@ -5,8 +5,10 @@ import {passGenHandler,
     getGenPass,
     saveSecretByValidName
 } from "./password_gen_handler.js";
-import { showAlertAboveTagName } from "./helpers.js";
-
+import { showSecretVal,
+    secretsFormHandler,
+    delSecret
+} from "./secrets_handler.js";
 
 // Handle all checks for empty inputs with all submissions.
 addEventListener("submit", function(e) {
@@ -33,8 +35,17 @@ addEventListener("submit", function(e) {
         else if (form.name == "pass-gen-form") {
             getGenPass(form, e);
         }
+        // Catch save generated password form.
         else if (form.name == "pass-save-form") {
             saveSecretByValidName(form, e);
+        }
+        // Catch secrets form.
+        else if (form.name == "secrets") {
+            secretsFormHandler(form, e);
+        }
+        // Catch delete secret form.
+        else if (form.name == "del-secret-form") {
+            delSecret(form, e);
         }
     }
 
@@ -48,3 +59,7 @@ if (pageTitle.innerText == "Secret Keeper: Secrets Generator") {
     passGenHandler();
 }
 
+// Secrets Generator.
+if (pageTitle.innerText == "Secret Keeper: Secrets") {
+    showSecretVal();
+}
