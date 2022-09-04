@@ -39,18 +39,19 @@ function loginValidation(form, e) {
                         document.body.scrollTop = 0;
                         // For Chrome, Firefox, IE and Opera.
                         document.documentElement.scrollTop = 0;
-                    } else {
-                        showAlertAboveTagName(
-                            "Oops, Somthing Wrong!",
-                            "server-error",
-                            "main"
-                        );
-                        // Scroll to top.
-                        // For Safari.
-                        document.body.scrollTop = 0;
-                        // For Chrome, Firefox, IE and Opera.
-                        document.documentElement.scrollTop = 0;
-                    };
+                    }
+                }).catch(function(err) {
+                    console.log(err);
+                    showAlertAboveTagName(
+                        "Oops, Somthing Wrong!",
+                        "server-error",
+                        "main"
+                    );
+                    // Scroll to top.
+                    // For Safari.
+                    document.body.scrollTop = 0;
+                    // For Chrome, Firefox, IE and Opera.
+                    document.documentElement.scrollTop = 0;
                 });
             }
         }).catch(function(err) {

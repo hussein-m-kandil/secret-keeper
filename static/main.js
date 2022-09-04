@@ -6,7 +6,9 @@ import {passGenHandler,
     saveSecretByValidName
 } from "./password_gen_handler.js";
 import { showSecretVal,
-    secretsFormHandler,
+    renameSecretHandler,
+    renSecret,
+    deleteSecretHandler,
     delSecret
 } from "./secrets_handler.js";
 
@@ -41,7 +43,16 @@ addEventListener("submit", function(e) {
         }
         // Catch secrets form.
         else if (form.name == "secrets") {
-            secretsFormHandler(form, e);
+            // Check Wheather the submit button is the delete or rename button.
+            if (e.submitter.value == "delete") {
+                deleteSecretHandler(form, e);
+            } else if (e.submitter.value == "rename") {
+                renameSecretHandler(form, e);
+            }
+        }
+        // Catch rename secret form.
+        else if (form.name == "ren-secret-form") {
+            renSecret(form, e);
         }
         // Catch delete secret form.
         else if (form.name == "del-secret-form") {

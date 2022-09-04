@@ -1,4 +1,4 @@
-from flask import redirect, session
+from flask import redirect, session, flash, get_flashed_messages
 from functools import wraps
 
 
@@ -19,4 +19,23 @@ def login_required(f):
             return redirect("/login")
         return f(*args, **kwargs)
     return decorated_function
+
+
+def flash_checker(flash_messages):
+    """
+    Take the return of 'get_flash_message()' function.
+    Return 'True' and side effect that it flash the messages again,
+    Otherwise, returns 'False'.
+    """
+    flash_msgs = flash_messages
+    len_flash_msgs = len(flash_msgs)
+    if len_flash_msgs > 0:
+        i = 0
+        while i < len_flash_msgs:
+            msg = flash_msgs[i]
+            flash(msg[1], msg[0])
+            i += 1
+        return True
+    return False
+
 

@@ -1,15 +1,130 @@
-// Get the bootstrap modal object and show it to the user.
-const delSecretWarning = new bootstrap.Modal('#del-secret-modal');
+import {
+    errMessageGen,
+    errMessageAnimy,
+    handleEmptyInputs,
+    showAlertAboveTagName,
+    usernameRegex,
+    passwordRegex,
+    sanitizerRegex,
+    isEmptyInput,
+    handleValidationErr,
+    secretNameRegex
+} from "./helpers.js";
 
-// Handling Secrets Form.
-function secretsFormHandler(form, e) {
+
+// Create placholders for bootstrap modals object.
+let RENSECRETWARNING;
+let DELSECRETWARNING;
+
+// Handling Renaming Secrets.
+function renameSecretHandler(form, e) {
+    e.preventDefault();
+    // Get the name of the secret which is about to be renamed.
+    const secretName = form.menu.selectedOptions[0].innerText;
+    // Get the header of the rename secret warning.
+    let renSecretHeader = document.getElementById("ren-secret-header");
+    // Set the text for the header of the rename secret warning.
+    renSecretHeader.textContent = "Renaming '" + secretName + "'";
+    // Get the body of the rename secret warning.
+    let renSecretBody = document.getElementById("ren-label");
+    renSecretBody.textContent = "Enter a new name for '" + secretName + "'";
+    // Give the rename form the value of the secret that user want to rename it.
+    let renForm = document.getElementById("ren-secret-form");
+    renForm["ren-secret-name"].value = form.menu.selectedOptions[0].innerText;
+    renForm["ren-secret-val"].value = form.menu.selectedOptions[0].value;
+    // Forget any entered value.
+    renForm["new-secret-name"].value = "";
+    // Get same secret name error element and remove it if there is one.
+    let sameSecretNameErr = document.getElementById("new-secret-name-val-err");
+    if (sameSecretNameErr) { sameSecretNameErr.remove(); }
+    // Get the bootstrap modal object.
+    RENSECRETWARNING = new bootstrap.Modal('#ren-secret-modal');
+    // Show warning message modal to the user.
+    RENSECRETWARNING.show();
+};
+
+// rename secret for the user.
+function renSecret(form, e) {
+    e.preventDefault();
+    // Create FormData data object and append the data for the secret that will be deleted.
+    let formData = new FormData();
+    formData.append("ren-secret-name", form["ren-secret-name"].value);
+    formData.append("ren-secret-val", form["ren-secret-val"].value);
+    formData.append("new-secret-name", form["new-secret-name"].value);
+    // Submit the FormData object.
+    fetch(URL["renSecret"].replace(sanitizerRegex, ''), {
+        "method": "POST",
+        "body": formData,
+        "credentials": "same-origin",
+    }).then(function(response) {
+        if (response.redirected) {
+            // Hide the warning message modal.
+            RENSECRETWARNING.hide()
+            // Follow the new location.
+            window.location.href = response.url;
+        } else if (!response.redirected) {
+            // If NOT redirected parse the response.
+            response.json().then(function(obj) {
+                if (obj.invalidData) {
+                    showAlertAboveTagName(
+                        "Oops, Somthing Wrong, try again later.",
+                        "invalid-inputs-error",
+                        "main"
+                    );
+                    // Scroll to top.
+                    // For Safari.
+                    document.body.scrollTop = 0;
+                    // For Chrome, Firefox, IE and Opera.
+                    document.documentElement.scrollTop = 0;
+                } else if (obj.sameNameExist) {
+                    handleValidationErr(
+                        "new-secret-name",
+                        "new-secret-name",
+                        "Sorry! you can't use same secret name twice."
+                    );
+                    document.getElementById("new-secret-name-val-err"
+                    ).setAttribute("class",
+                        "text-start text-danger text-lighter"
+                    );
+                }
+            }).catch(function(err) {
+                console.log(err);
+                showAlertAboveTagName(
+                    "Oops, Somthing Wrong!",
+                    "server-error",
+                    "main"
+                );
+                // Scroll to top.
+                // For Safari.
+                document.body.scrollTop = 0;
+                // For Chrome, Firefox, IE and Opera.
+                document.documentElement.scrollTop = 0;
+            });
+        }
+    }).catch(function(err) {
+        console.log(err);
+        showAlertAboveTagName(
+            "Oops, Somthing Wrong!",
+            "server-error",
+            "main"
+        );
+        // Scroll to top.
+        // For Safari.
+        document.body.scrollTop = 0;
+        // For Chrome, Firefox, IE and Opera.
+        document.documentElement.scrollTop = 0;
+    });
+};
+
+// Handling Deleting Secrets.
+function deleteSecretHandler(form, e) {
     e.preventDefault();
     // Get the name of the secret which is about to be deleted.
     const secretName = form.menu.selectedOptions[0].innerText;
     // Get the header of the delete secret warning.
     let delSecretHeader = document.getElementById("del-secret-header");
     // Set the text for the header of the delete secret warning.
-    delSecretHeader.textContent = "Deleting '" + secretName + "'...";
+    delSecretHeader.textContent = "Deleting '" + secretName + "'";
     // Get the body of the delete secret warning.
     let delSecretBody = document.getElementById("del-warn-msg");
     // Set the text for the body of the delete secret warning.
@@ -25,21 +140,72 @@ function secretsFormHandler(form, e) {
     let delForm = document.getElementById("del-secret-form");
     delForm["del-secret-name"].value = form.menu.selectedOptions[0].innerText;
     delForm["del-secret-val"].value = form.menu.selectedOptions[0].value;
+    // Get the bootstrap modal object.
+    DELSECRETWARNING = new bootstrap.Modal('#del-secret-modal');
     // Show warning message modal to the user.
-    delSecretWarning.show();
+    DELSECRETWARNING.show();
 };
 
 // Delete secret for the user.
 function delSecret(form, e) {
     e.preventDefault();
-    // Hide the warning message modal.
-    delSecretWarning.hide()
     // Create FormData data object and append the data for the secret that will be deleted.
     let formData = new FormData();
     formData.append("del-secret-name", form["del-secret-name"].value);
     formData.append("del-secret-val", form["del-secret-val"].value);
-    // TODO: creat route for delete in app.py and put it in the global var in layout then submit the FormData object.
-
+    // Submit the FormData object.
+    fetch(URL["delSecret"].replace(sanitizerRegex, ''), {
+        "method": "POST",
+        "body": formData,
+        "credentials": "same-origin",
+    }).then(function(response) {
+        if (response.redirected) {
+            // Hide the warning message modal.
+            DELSECRETWARNING.hide()
+            // Follow the new location.
+            window.location.href = response.url;
+        } else if (!response.redirected) {
+            // If NOT redirected parse the response.
+            response.json().then(function(obj) {
+                if (obj.invalidData) {
+                    showAlertAboveTagName(
+                        "Oops, Somthing Wrong, try again later.",
+                        "invalid-inputs-error",
+                        "main"
+                    );
+                    // Scroll to top.
+                    // For Safari.
+                    document.body.scrollTop = 0;
+                    // For Chrome, Firefox, IE and Opera.
+                    document.documentElement.scrollTop = 0;
+                }
+            }).catch(function(err) {
+                console.log(err);
+                showAlertAboveTagName(
+                    "Oops, Somthing Wrong!",
+                    "server-error",
+                    "main"
+                );
+                // Scroll to top.
+                // For Safari.
+                document.body.scrollTop = 0;
+                // For Chrome, Firefox, IE and Opera.
+                document.documentElement.scrollTop = 0;
+            });
+        }
+    }).catch(function(err) {
+        console.log(err);
+        showAlertAboveTagName(
+            "Oops, Somthing Wrong!",
+            "server-error",
+            "main"
+        );
+        // Scroll to top.
+        // For Safari.
+        document.body.scrollTop = 0;
+        // For Chrome, Firefox, IE and Opera.
+        document.documentElement.scrollTop = 0;
+    });
 };
 
 // Handling the value of the choosen secret.
@@ -54,6 +220,8 @@ function showSecretVal(){
 
 
 export { showSecretVal,
-    secretsFormHandler,
+    renameSecretHandler,
+    renSecret,
+    deleteSecretHandler,
     delSecret
 };

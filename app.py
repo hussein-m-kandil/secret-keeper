@@ -2,12 +2,12 @@
 import os
 
 from cs50 import SQL
-from flask import Flask, flash, jsonify, make_response, redirect, render_template, request, send_from_directory, session
+from flask import Flask, flash, get_flashed_messages, jsonify, make_response, redirect, render_template, request, send_from_directory, session
 from flask_session import Session
 from tempfile import mkdtemp
 from werkzeug.security import check_password_hash, generate_password_hash
 
-from check_login import login_required
+from helpers import login_required, flash_checker
 from password_generator import generate_password
 
 # Configure application
@@ -40,6 +40,7 @@ def after_request(response):
     return response
 
 
+
 @app.route("/")
 @login_required
 def index():
@@ -49,19 +50,11 @@ def index():
     # Get current username
     user_info = db.execute("SELECT * FROM users WHERE id = ?", u_id)
     username = user_info[0]["username"]
-    # Check if this the first time for the user in order to print greating message.
-    referer = request.headers["referer"]
-    route = ""
-    i = len(referer) - 1
-    while i >= 0:
-        if referer[i] == '/':
-            route += referer[i:]
-            break
-        i -= 1
-    if route == "/register":
-        return render_template("index.html", username=username)
     # Get user secrets.
-    secrets = db.execute("SELECT * FROM secrets WHERE user_id = ?", u_id)
+    secrets = db.execute("SELECT * FROM secrets WHERE user_id = ? ORDER BY datetime DESC", u_id)
+    # Check for flash_messages and if there one flash it again.
+    flash_msgs = get_flashed_messages(with_categories=True)
+    flash_checker(flash_msgs)
     #return secrets page.
     return render_template("index.html", secrets=secrets)
 
@@ -87,16 +80,10 @@ def login():
             # Ensure username exists and password is correct
             if len(user) != 1 or not check_password_hash(user[0]["hash"], user_pass):
                 try:
-                    resp = jsonify({"invalidUserData": True})
-                    # Just in case we can add some Access Controls.
-                    resp.headers.add("Access-Control-Allow-Origin", "*")
-                    resp.headers.add("Access-Control-Allow-Headers", "*")
-                    # # And we can use header to represent the value.
-                    # resp.headers.add("nameExist", "kokowawa")
-                    return resp
+                    return jsonify({"invalidUserData": True})
                 except:
                     flash("Something Wrong!")
-                    flash("Check your inputs (username/password) and try again.")
+                    flash("Try again later.")
                     return redirect("/login")
 
             # Remember which user has logged in
@@ -108,7 +95,9 @@ def login():
             flash("Something Wrong!")
             flash("Check your inputs (username/password) and try again.")
             return redirect("/login")
-
+    # Check for flash_messages and if there one flash it again.
+    flash_msgs = get_flashed_messages(with_categories=True)
+    flash_checker(flash_msgs)
     # User reached route via GET (as by clicking a link or via redirect)
     return render_template("login.html")
 
@@ -116,10 +105,8 @@ def login():
 @app.route("/logout")
 def logout():
     """Log user out"""
-
     # Forget any user_id
     session.clear()
-
     # Redirect user to login form
     return redirect("/login")
 
@@ -138,13 +125,13 @@ def register():
             name_check = db.execute("SELECT * FROM users WHERE username = ?", name)
             if len(name_check) > 0:
                 try:
-                    resp = jsonify({"nameExist": True})
+                    # resp = jsonify({"nameExist": True})
                     # Just in case we can add some Access Controls.
-                    resp.headers.add("Access-Control-Allow-Origin", "*")
-                    resp.headers.add("Access-Control-Allow-Headers", "*")
+                    # resp.headers.add("Access-Control-Allow-Origin", "*")
+                    # resp.headers.add("Access-Control-Allow-Headers", "*")
                     # # And we can use header to represent the value.
                     # resp.headers.add("nameExist", "kokowawa")
-                    return resp
+                    return jsonify({"nameExist": True})
                 except:
                     flash("Can't use this name")
                     return redirect("register")
@@ -160,9 +147,8 @@ def register():
                 # In case the insertion into the database failed.
                 except:
                     return jsonify({"databaseErr": True})
-
-
                 # Redirect the user to homepage
+                flash(f"WELCOME  {name.upper()}!", "success")
                 return redirect("/")
         else:
             flash("Something Wrong!")
@@ -197,7 +183,9 @@ def change_password():
                              WHERE id = ?", hash_new_pass, u_id,)
                 # Forget user's logging in
                 session.clear()
-                return redirect("/passwordChanged")
+                # Redirect user to login and tell him that his password is changed.
+                flash(f"You have changed your password successfully.", "success")
+                return redirect("/login")
     return render_template("password.html")
 
 
@@ -246,6 +234,7 @@ def secret_generator():
     # Get the password generator page.
     return render_template("gen_password.html")
 
+
 @app.route("/saveSecret", methods=["POST"])
 @login_required
 def save_secret():
@@ -272,17 +261,58 @@ def save_secret():
     except:
         return jsonify({"databaseErr": True})
     # Redirect user to index through 'successSecret' route.
-    return redirect("/successSecret")
+    flash(f"'{secret_name}' has been saved successfully.", "success")
+    return redirect("/")
 
-@app.route("/successSecret")
-def success_secret():
-    # Redirect user to index and tell him that the password is saved.
-    flash("The new Secret have been saved successfully.", "success")
-    return render_template("index.html")
 
-@app.route("/passwordChanged")
-def password_changed():
-    # Redirect user to login and tell him that his password is changed.
-    flash(f"You have changed your password successfully.", "success")
-    return render_template("login.html")
+@app.route("/delSecret", methods=["POST"])
+@login_required
+def del_secret():
+    # Get the user's id.
+    u_id = session["user_id"]
+    # Get secret data.
+    secret_name = request.form.get("del-secret-name")
+    secret_val = request.form.get("del-secret-val")
+    # Check request's data
+    if not secret_name or not secret_val:
+        return jsonify({"invalidData": True})
+    # Delete the secret.
+    db.execute("DELETE FROM secrets \
+                      WHERE secret_name = ? \
+                        AND secret = ? \
+                        AND user_id = ?", secret_name, secret_val, u_id)
+    # Redirect the user to be informed that the deletion have done successfully.
+    flash(f"'{secret_name}' has been deleted.", "success")
+    return redirect("/")
+
+
+@app.route("/renSecret", methods=["POST"])
+@login_required
+def ren_secret():
+    # Get the user's id.
+    u_id = session["user_id"]
+    # Get secret data.
+    secret_name = request.form.get("ren-secret-name")
+    secret_val = request.form.get("ren-secret-val")
+    new_secret_name = request.form.get("new-secret-name")
+    # Check request's data
+    if not secret_name or not secret_val:
+        return jsonify({"invalidData": True})
+    # Check Wheather the secret name is already exists.
+    same_name_check = db.execute("SELECT * FROM secrets \
+                                          WHERE user_id = ? \
+                                            AND secret_name = ?", u_id, new_secret_name)
+    if len(same_name_check) > 0:
+        return jsonify({"sameNameExist": True})
+    # rename the secret.
+    db.execute("UPDATE secrets \
+                   SET secret_name = ? \
+                 WHERE secret_name = ? \
+                   AND secret = ? \
+                   AND user_id = ?", new_secret_name, secret_name, secret_val, u_id)
+    # Redirect the user to be informed that the rename has done successfully.
+    flash(f"'{secret_name}' has been renamed to '{new_secret_name}'.", \
+            "success")
+    return redirect("/")
+
 
