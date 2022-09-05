@@ -230,21 +230,21 @@ def secret_generator():
         # Get the required password's length.
         pass_len = request.form.get("pass-len")
         # Generate new password.
-        if pass_len and (upper or lower or nums or puncs):
-            try:
-                # try to convert the number of password's length.
-                pass_len = int(pass_len)
-            except:
-                # return error response
-                return jsonify({"genPass": "", "invalidData": True})
-            # Try to return the generated password.
-            try:
-                gen_pass = generate_password(pass_len, upper, lower, nums, puncs)
-                return jsonify({"genPass": gen_pass, "invalidData": False})
-            # Just in case.
-            except:
-                return jsonify({"genPass": "", "invalidData": True})
-
+        if pass_len:
+            if upper or lower or nums or puncs:
+                try:
+                    # try to convert the number of password's length.
+                    pass_len = int(pass_len)
+                except:
+                    # return error response
+                    return jsonify({"genPass": "", "invalidData": True})
+                # Try to return the generated password.
+                try:
+                    gen_pass = generate_password(pass_len, upper, lower, nums, puncs)
+                    return jsonify({"genPass": gen_pass, "invalidData": False})
+                # Just in case.
+                except:
+                    return jsonify({"genPass": "", "invalidData": True})
         else:
             return jsonify({"genPass": "", "invalidData": True})
 

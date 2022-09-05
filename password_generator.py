@@ -13,19 +13,34 @@ def generate_password(pass_len=16, upper=True, lower=True, nums=True, punc=True)
             Otherwise, Returns None.
         """
         # Add to generated password random somple from current character type.
-        final_pass.extend(random.sample(char_type, percentage))
+        try:
+            final_pass.extend(random.sample(char_type, percentage))
+        except:
+            final_pass.extend(random.sample(char_type, 10))
         # Check wheather their is any remaining in the length of the password.
         current_pass_need = password_len - len(final_pass)
         if current_pass_need  > 0:
-            temp_pass_list = random.sample(all_types, current_pass_need)
-            return temp_pass_list
+            try:
+                temp_pass_list = random.sample(all_types, current_pass_need)
+                return temp_pass_list
+            except:
+                temp_pass_list = []
+                i = current_pass_need
+                while i > 0:
+                    if i > 10:
+                        temp_pass_list.extend(random.sample(all_types, 10))
+                        i -= 10
+                    else:
+                        temp_pass_list.extend(random.sample(all_types, i))
+                        i -= i
+                return temp_pass_list
         return None
 
     # Create individual lists for each type of characters.
     upper_chars = string.ascii_uppercase
     lower_chars = string.ascii_lowercase
-    nums_chars = string.digits
     punc_chars = string.punctuation
+    nums_chars = string.digits
 
     # Create a placeholder for all choosen characters types.
     all_chars = []
@@ -51,13 +66,17 @@ def generate_password(pass_len=16, upper=True, lower=True, nums=True, punc=True)
         all_chars.extend(lower_chars)
         is_missed_pass_len = get_random_sample(lower_chars, all_chars, thirty_percent, pass_len, password)
 
-    if nums:
-        all_chars.extend(nums_chars)
-        is_missed_pass_len = get_random_sample(nums_chars, all_chars, twenty_percent, pass_len, password)
-
     if punc:
         all_chars.extend(punc_chars)
         is_missed_pass_len = get_random_sample(punc_chars, all_chars, twenty_percent, pass_len, password)
+
+    if nums:
+        all_chars.extend(nums_chars)
+        # Never allow to number of numbers characters to be greater than 10.
+        if twenty_percent > 10:
+            is_missed_pass_len = get_random_sample(nums_chars, all_chars, 10, pass_len, password)
+        else:
+            is_missed_pass_len = get_random_sample(nums_chars, all_chars, twenty_percent, pass_len, password)
 
     # Check the length of the generated password.
     if len(password) < pass_len and is_missed_pass_len:
@@ -70,5 +89,5 @@ def generate_password(pass_len=16, upper=True, lower=True, nums=True, punc=True)
     return password
 
 # # TEST:
-# print(generate_password(16, True, True, True, True))
+# print(generate_password(32, False, False, True, True))
 

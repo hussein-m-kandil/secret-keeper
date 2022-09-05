@@ -198,7 +198,7 @@ function passGenHandler() {
 
 
     // Password generator characters types.
-    // If user didn't check on any thing other than number the max Password length should be 12. Otherwise, 23.
+    // If user didn't check on any thing other than number the max Password length should be 10. Otherwise, 32.
     // Get types check boxes elements & generator button & name input & save button.
     let upperBox = document.getElementById("upper");
     let lowerBox = document.getElementById("lower");
@@ -245,11 +245,11 @@ function passGenHandler() {
                 } else {
                     disableFormElements(passGenForm, false);
                     disableFormElements(passSaveForm, false);
-                    if (passLenValue.value > 12) {
-                        passLenValue.value = 12;
-                        passLenRange.value = 12;
+                    if (passLenValue.value > 10) {
+                        passLenValue.value = 10;
+                        passLenRange.value = 10;
                     }
-                    passLenRange.max = 12;
+                    passLenRange.max = 10;
                 };
             } else {
                 disableFormElements(passGenForm, false);
