@@ -17,12 +17,15 @@
                     {% endfor %}
                 </select>
             </div>
-            <div class="text-center mb-5">
-                <input class="form-control-plaintext border border-1 border-secondary rounded text-center mx-auto fs-5" name="secret" id="secret" type="text" value="Secret will apear here." aria-label="Secret" readonly />
+            <div class="input-group mb-5">
+                <input class="form-control bg-light-gray text-center fs-5" name="secret" id="secret" type="password" value="Secret will apear here." aria-label="Secret" readonly />
+                <span class="input-group-text bg-light-gray">
+                    <i class="bi bi-eye-fill"></i>
+                </span>
             </div>
-            <div class="row row-cols-2 text-center mx-auto mb-5 justify-content-between">
-                <button class="col-auto btn btn-dark mx-auto fs-5 text-danger" type="submit" form="secrets" value="delete">Delete Secret</button>
-                <button class="col-auto btn btn-dark mx-auto fs-5 text-light-gray" type="submit" form="secrets" value="rename">Rename Secret</button>
+            <div class="row g-5 row-cols-2 text-center mx-auto mb-5 justify-content-between align-items-center">
+                <button class="col-auto btn btn-dark mx-auto fs-5 text-danger" type="submit" form="secrets" id="del-btn" value="delete" disabled>Delete Secret</button>
+                <button class="col-auto btn btn-dark mx-auto fs-5 text-light-gray" type="submit" form="secrets" id="ren-btn" value="rename" disabled>Rename Secret</button>
             </div>
         </form>
         <!-- DELETE MODAL -->
@@ -60,7 +63,7 @@
                             <input type="hidden" id="ren-secret-name" name="ren-secret-name" value="" />
                             <input type="hidden" id="ren-secret-val" name="ren-secret-val" value="" />
                             <label class="fs-6 mb-2 text-start" id="ren-label" for="new-secret-name"></label>
-                            <input class="form-control mb-2 text-center fs-5" name="new-secret-name" id="new-secret-name" type="text" placeholder="New Name" autocomplete="off" />
+                            <input class="form-control mb-2 text-center fs-5" name="new-secret-name" id="new-secret-name" type="text" placeholder="New Name" autocomplete="off" spellcheck="false" />
                         </form>
                     </div>
                     <div class="modal-footer">

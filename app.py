@@ -2,7 +2,7 @@
 import os
 
 from cs50 import SQL
-from flask import Flask, flash, get_flashed_messages, jsonify, make_response, redirect, render_template, request, send_from_directory, session
+from flask import Flask, flash, get_flashed_messages, jsonify, make_response, redirect, render_template, request, send_from_directory, session, url_for
 from flask_session import Session
 from tempfile import mkdtemp
 from werkzeug.security import check_password_hash, generate_password_hash
@@ -17,16 +17,18 @@ app = Flask(__name__)
 app.config["TEMPLATES_AUTO_RELOAD"] = True
 
 # Configure session to use filesystem (instead of signed cookies)
-app.config["SESSION_PERMANENT"] = True
-app.config["PERMANENT_SESSION_LIFETIME"] = 1800
+app.config["SESSION_PERMANENT"] = False
+app.config["PERMANENT_SESSION_LIFETIME"] = 1200
 app.config["SESSION_TYPE"] = "filesystem"
 
 # Give the browser an order to allow JavaScript access to cookies.
 app.config["SESSION_COOKIE_HTTPONLY"] = False
-app.config["SESSION_COOKIE_SECURE"] = False
+app.config["SESSION_COOKIE_SECURE"] = True
 app.config["SESSION_COOKIE_SAMESITE"] = "Lax"
 
+
 Session(app)
+
 
 # Configure CS50 Library to use SQLite database
 db = SQL("sqlite:///secret_keeper.db")
@@ -40,13 +42,25 @@ def after_request(response):
     return response
 
 
+# Route for clearing flashes after loading it in the page.
+@app.route("/clearFlashes", methods=["POST"])
+def clear_flashes():
+    try:
+        session.pop("_flashes", None)
+        return jsonify({"flashesCleared": True})
+    except:
+        return jsonify({"flashesCleared": False})
+
+
 
 @app.route("/")
 @login_required
 def index():
     """Show portfolio of stocks"""
-    # GET current user cash
-    u_id = session["user_id"]
+    # Try to get the user id.
+    u_id = session.get("user_id")
+    if not u_id:
+        return redirect("/login")
     # Get current username
     user_info = db.execute("SELECT * FROM users WHERE id = ?", u_id)
     username = user_info[0]["username"]
@@ -162,7 +176,10 @@ def register():
 @login_required
 def change_password():
     """User change his password"""
-    u_id = session["user_id"]
+    # Try to get the user id.
+    u_id = session.get("user_id")
+    if not u_id:
+        return redirect("/login")
     if request.method == "POST":
         # GET user inputs
         password = request.form.get("password")
@@ -239,8 +256,10 @@ def secret_generator():
 @login_required
 def save_secret():
     """Save the new generated password for the user."""
-    # Get the user id, secret and secret name.
-    u_id = session["user_id"]
+    # Try to get the user id.
+    u_id = session.get("user_id")
+    if not u_id:
+        return redirect("/login")
     secret = request.form.get("secret")
     secret_name = request.form.get("secret-name")
     # Check for invalid data.
@@ -268,8 +287,10 @@ def save_secret():
 @app.route("/delSecret", methods=["POST"])
 @login_required
 def del_secret():
-    # Get the user's id.
-    u_id = session["user_id"]
+    # Try to get the user id.
+    u_id = session.get("user_id")
+    if not u_id:
+        return redirect("/login")
     # Get secret data.
     secret_name = request.form.get("del-secret-name")
     secret_val = request.form.get("del-secret-val")
@@ -289,8 +310,10 @@ def del_secret():
 @app.route("/renSecret", methods=["POST"])
 @login_required
 def ren_secret():
-    # Get the user's id.
-    u_id = session["user_id"]
+    # Try to get the user id.
+    u_id = session.get("user_id")
+    if not u_id:
+        return redirect("/login")
     # Get secret data.
     secret_name = request.form.get("ren-secret-name")
     secret_val = request.form.get("ren-secret-val")

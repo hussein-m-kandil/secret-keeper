@@ -8,10 +8,10 @@ function errMessageGen(message, elementId){
     */
     let warning = document.createElement("p");
     warning.textContent = message;
-    warning.setAttribute("class", "text-danger fw-lighter mx-auto w-50")
+    warning.setAttribute("class", "text-danger fw-lighter w-50")
     warning.setAttribute("id", elementId)
     warning.style.fontSize = "0.75rem";
-    warning.style.margin = "auto";
+    // warning.style.margin = "auto";
     warning.style.textAlign = "left";
 
     return warning;
@@ -68,7 +68,7 @@ function handleEmptyInputs(submissionEvent, inputName, inputObj, errMessage) {
                 errMessageAnimy(errObj);
             } else {
                 // Print error message for each empty input.
-                inputObj.after(
+                inputObj.parentNode.after(
                     errMessageGen(errMessage, `${inputName}-err`)
                 );
             }
@@ -158,7 +158,7 @@ function handleValidationErr(validElementId, inputName, message) {
     if (!errObj) {
         let valErr = errMessageGen(message, `${inputName}-val-err`);
         const passElement = document.getElementById(validElementId);
-        passElement.after(valErr);
+        passElement.parentNode.after(valErr);
 
     } else {
         errObj.style.display = "block";

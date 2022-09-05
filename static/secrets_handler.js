@@ -35,8 +35,14 @@ function renameSecretHandler(form, e) {
     // Forget any entered value.
     renForm["new-secret-name"].value = "";
     // Get same secret name error element and remove it if there is one.
-    let sameSecretNameErr = document.getElementById("new-secret-name-val-err");
+    let sameSecretNameErr = document.getElementById("same-name-exist-err");
     if (sameSecretNameErr) { sameSecretNameErr.remove(); }
+    // Get secret name validation error element and remove it if there is one.
+    let secretNameValidErr = document.getElementById("new-secret-name-val-err");
+    if (secretNameValidErr) { secretNameValidErr.remove(); }
+    // Get empty secret name error element and remove it if there is one.
+    let emptySecretNameErr = document.getElementById("new-secret-name-err");
+    if (emptySecretNameErr) { emptySecretNameErr.remove(); }
     // Get the bootstrap modal object.
     RENSECRETWARNING = new bootstrap.Modal('#ren-secret-modal');
     // Show warning message modal to the user.
@@ -46,29 +52,76 @@ function renameSecretHandler(form, e) {
 // rename secret for the user.
 function renSecret(form, e) {
     e.preventDefault();
-    // Create FormData data object and append the data for the secret that will be deleted.
-    let formData = new FormData();
-    formData.append("ren-secret-name", form["ren-secret-name"].value);
-    formData.append("ren-secret-val", form["ren-secret-val"].value);
-    formData.append("new-secret-name", form["new-secret-name"].value);
-    // Submit the FormData object.
-    fetch(URL["renSecret"].replace(sanitizerRegex, ''), {
-        "method": "POST",
-        "body": formData,
-        "credentials": "same-origin",
-    }).then(function(response) {
-        if (response.redirected) {
-            // Hide the warning message modal.
-            RENSECRETWARNING.hide()
-            // Follow the new location.
-            window.location.href = response.url;
-        } else if (!response.redirected) {
-            // If NOT redirected parse the response.
-            response.json().then(function(obj) {
-                if (obj.invalidData) {
+    // Check for empty secret name.
+    let secretName = isEmptyInput(form, "new-secret-name", e, "NEW NAME IS MISSING!");
+    // Check username validation.
+    let isValidSecretName = false;
+    if (secretName) {
+        if (!secretNameRegex.test(secretName)) {
+            handleValidationErr(
+                "new-secret-name",
+                "new-secret-name",
+                "4-128 Characters has Lowercase/Uppercase Letters, Numbers and Spaces/Underscores."
+            );
+            isValidSecretName = false;
+        } else {
+            isValidSecretName = true;
+            // Remove any validation error messages if exists.
+            let valErr = document.getElementById("new-secret-name-val-err");
+            if (valErr) {
+                valErr.style.display = "none";
+            }
+        }
+    }
+    if(isValidSecretName) {
+        // Create FormData data object and append the data for the secret that will be deleted.
+        let formData = new FormData();
+        formData.append("ren-secret-name", form["ren-secret-name"].value);
+        formData.append("ren-secret-val", form["ren-secret-val"].value);
+        formData.append("new-secret-name", form["new-secret-name"].value);
+        // Submit the FormData object.
+        fetch(URL["renSecret"].replace(sanitizerRegex, ''), {
+            "method": "POST",
+            "body": formData,
+            "credentials": "same-origin",
+        }).then(function(response) {
+            if (response.redirected) {
+                // Hide the warning message modal.
+                RENSECRETWARNING.hide()
+                // Follow the new location.
+                window.location.href = response.url;
+            } else if (!response.redirected) {
+                // If NOT redirected parse the response.
+                response.json().then(function(obj) {
+                    if (obj.invalidData) {
+                        showAlertAboveTagName(
+                            "Oops, Somthing Wrong, try again later.",
+                            "invalid-inputs-error",
+                            "main"
+                        );
+                        // Scroll to top.
+                        // For Safari.
+                        document.body.scrollTop = 0;
+                        // For Chrome, Firefox, IE and Opera.
+                        document.documentElement.scrollTop = 0;
+                    } else if (obj.sameNameExist) {
+                        // Give the user error message and if it exists animate it.
+                        let errMsg = document.getElementById("same-name-exist-err");
+                        if (!errMsg) {
+                            errMsg = document.createElement("p");
+                            errMsg.setAttribute("class", "text-start text-danger text-lighter");
+                            errMsg.textContent = "Sorry! you can't use same secret name twice.";
+                            errMsg.style.fontSize = "0.75rem";
+                            errMsg.setAttribute("id", "same-name-exist-err");
+                            let inputObj = document.getElementById("new-secret-name");
+                            inputObj.after(errMsg);
+                        } else { errMessageAnimy(errMsg); }
+                    }
+                }).catch(function(err) {
+                    console.log(err);
                     showAlertAboveTagName(
-                        "Oops, Somthing Wrong, try again later.",
-                        "invalid-inputs-error",
+                        "Oops, Somthing Wrong!",
+                        "server-error",
                         "main"
                     );
                     // Scroll to top.
@@ -76,44 +129,22 @@ function renSecret(form, e) {
                     document.body.scrollTop = 0;
                     // For Chrome, Firefox, IE and Opera.
                     document.documentElement.scrollTop = 0;
-                } else if (obj.sameNameExist) {
-                    handleValidationErr(
-                        "new-secret-name",
-                        "new-secret-name",
-                        "Sorry! you can't use same secret name twice."
-                    );
-                    document.getElementById("new-secret-name-val-err"
-                    ).setAttribute("class",
-                        "text-start text-danger text-lighter"
-                    );
-                }
-            }).catch(function(err) {
-                console.log(err);
-                showAlertAboveTagName(
-                    "Oops, Somthing Wrong!",
-                    "server-error",
-                    "main"
-                );
-                // Scroll to top.
-                // For Safari.
-                document.body.scrollTop = 0;
-                // For Chrome, Firefox, IE and Opera.
-                document.documentElement.scrollTop = 0;
-            });
-        }
-    }).catch(function(err) {
-        console.log(err);
-        showAlertAboveTagName(
-            "Oops, Somthing Wrong!",
-            "server-error",
-            "main"
-        );
-        // Scroll to top.
-        // For Safari.
-        document.body.scrollTop = 0;
-        // For Chrome, Firefox, IE and Opera.
-        document.documentElement.scrollTop = 0;
-    });
+                });
+            }
+        }).catch(function(err) {
+            console.log(err);
+            showAlertAboveTagName(
+                "Oops, Somthing Wrong!",
+                "server-error",
+                "main"
+            );
+            // Scroll to top.
+            // For Safari.
+            document.body.scrollTop = 0;
+            // For Chrome, Firefox, IE and Opera.
+            document.documentElement.scrollTop = 0;
+        });
+    }
 };
 
 // Handling Deleting Secrets.

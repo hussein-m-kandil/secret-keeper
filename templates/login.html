@@ -3,13 +3,16 @@
 {% block title %}Log In{% endblock %}
 
 {% block main %}
-    <div class="row row-cols-1 col-8 col-md-6 col-lg-4 mx-auto text-center">
+    <div class="row row-cols-1 col-12 col-sm-8 col-md-6 col-lg-4 mx-auto text-center">
         <form name="login" id="login" action="/login" method="post">
             <div class="mb-3">
-                <input autocomplete="off" autofocus class="form-control mx-auto text-center" id="username" name="username" placeholder="username" type="text" aria-label="Username">
+                <input autocomplete="off" autofocus class="form-control mx-auto" id="username" name="username" placeholder="username" type="text" aria-label="Username" spellcheck="false">
             </div>
-            <div class="mb-3">
-                <input class="form-control mx-auto text-center" id="password" name="password" placeholder="password" type="password" aria-label="Password">
+            <div class="input-group mb-3">
+                <input class="form-control mx-auto" id="password" name="password" placeholder="password" type="password" aria-label="Password">
+                <span class="input-group-text bg-white">
+                    <i class="bi bi-eye-fill"></i>
+                </span>
             </div>
             <button class="btn btn-dark" type="submit" form="login">Log In</button>
         </form>

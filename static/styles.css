@@ -17,11 +17,15 @@ body {
 /* Inputs box shadow color */
 .form-control:hover,
 .form-control:active,
-.form-control:focus{
+.form-control:focus,
+.form-select:hover,
+.form-select:active,
+.form-select:focus {
     box-shadow: 0 0 01px 02px rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(0, 0, 0, 0.2);
 }
 
-/* Light gray color for text */
+/* Light gray color for text & backgrounds*/
 .text-light-gray {
     color: var(--light-gray);
 }

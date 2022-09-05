@@ -220,6 +220,17 @@ function passGenHandler() {
         };
         return true;
     };
+    // When the window is loaded.
+    window.addEventListener("DOMContentLoaded", function(e) {
+        passSaveBtn.disabled = true;
+    });
+    // Listen to any input event.
+    addEventListener("input", function() {
+        if (passSaveForm["pass-gen-name"].value != "") {
+            passSaveBtn.disabled = false;
+        } else { passSaveBtn.disabled = true; }
+    });
+    // Listen for changing on Check Boxes.
     addEventListener("change", function(e) {
         if (e.target.type == "checkbox") {
             if (!upperBox.checked && !lowerBox.checked && !puncsBox.checked) {
