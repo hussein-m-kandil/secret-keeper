@@ -94,6 +94,15 @@ function showAlertAboveTagName(message, alertId, tagNameToInsertAbove) {
         -->> Creates div for alert with dismiss button.
         Then, show it to the user by putting it in the HTML page above the given tag name.
     */
+    // Try to get the same alert and if exists close it first and create new one.
+    let testExist = document.getElementById(alertId);
+    let sameAlert = bootstrap.Alert.getOrCreateInstance('#' + alertId);
+    if (sameAlert && testExist) {
+        sameAlert.close();
+        addEventListener("closed.bs.alert", function() {
+            showAlertAboveTagName(message, alertId, tagNameToInsertAbove);
+        });
+    }
     // Create div for alert.
     let alertDiv = document.createElement("div");
     alertDiv.setAttribute("id", alertId)
@@ -170,7 +179,7 @@ function handleValidationErr(validElementId, inputName, message) {
 // Regex pattern for username.
 const usernameRegex = /^[a-z][a-z0-9_-]{3,27}$/;
 // Regex pattern for password.
-const passwordRegex = /(?=.*\d)(?=.*[a-z]).{8,}/i;
+const passwordRegex = /(?=.*\d)(?=.*[a-zA-Z]).{8,}/i;
 // Regex pattern for " ' and white spaces.
 const sanitizerRegex = /[^\w-]/g;
 // Regex pattern for secret name.

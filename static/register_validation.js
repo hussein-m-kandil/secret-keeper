@@ -35,7 +35,7 @@ function registerValidation(form, e) {
             if (valErr) {
                 valErr.style.display = "none";
             }
-        };
+        }
     }
     // Check password validation.
     if (password) {
@@ -53,37 +53,23 @@ function registerValidation(form, e) {
             if (valErr) {
                 valErr.style.display = "none";
             }
-        };
+        }
     }
-    // Check password confirmation validation.
-    if (confirmPass) {
-        if (!passwordRegex.test(confirmPass)) {
-            handleValidationErr(
-                "confirmation",
-                "confirmation",
-                "At least 8 Characters containing 1 Number and 1 Letter."
-            );
-            isValidPassConfirm = false;
-        } else {
-            isValidPassConfirm = true;
-            // Remove any validation error messages if exists.
-            let valErr = document.getElementById("confirmation-val-err");
-            if (valErr) {
-                valErr.style.display = "none";
-            }
-        };
-    }
-    // Check for password and password confirmation matching.
-    if (isValidPassConfirm && isValidPassword){
-        if (password == confirmPass) {
-            passConfirmIsMatch = true;
-        } else {
-            handleValidationErr(
-                "confirmation",
-                "confirmation",
-                "Password confirmation does not match."
-            );
-        };
+    // if (isValidPassConfirm && isValidPassword){
+    if (password !== confirmPass) {
+        handleValidationErr(
+            "confirmation",
+            "confirmation",
+            "Password confirmation does not match."
+        );
+        passConfirmIsMatch = false;
+    } else {
+        passConfirmIsMatch = true;
+        // Remove any validation error messages if exists.
+        let valErr = document.getElementById("confirmation-val-err");
+        if (valErr) {
+            valErr.style.display = "none";
+        }
     }
     // Submit the request.
     if (username && isValidUserName && password && confirmPass && passConfirmIsMatch) {
