@@ -8,7 +8,7 @@ function errMessageGen(message, elementId){
     */
     let warning = document.createElement("p");
     warning.textContent = message;
-    warning.setAttribute("class", "text-danger fw-lighter w-50")
+    warning.setAttribute("class", "text-danger fw-lighter")
     warning.setAttribute("id", elementId)
     warning.style.fontSize = "0.75rem";
     // warning.style.margin = "auto";

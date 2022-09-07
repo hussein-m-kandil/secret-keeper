@@ -2,7 +2,7 @@
 :root {
     font-size: 100%;
     box-sizing: border-box;
-    --light-gray: #efefef;
+    --light-gray: #fafafa;
 }
 
 /* Body Properties */
@@ -31,5 +31,16 @@ body {
 }
 .bg-light-gray {
     background-color: var(--light-gray);
+}
+
+/* Change range slider color */
+.form-range::-webkit-slider-thumb {
+    background-color: black;
+}
+.form-range::-moz-range-thumb {
+    background-color: black;
+}
+.form-range {
+    height: 0;
 }
 
