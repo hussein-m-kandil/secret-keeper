@@ -30,6 +30,7 @@ window.addEventListener("load", function(e) {
         // console.log(err);
         console.error(err);
     });
+
 });
 
 // Handle all checks for empty inputs with all submissions.
@@ -80,6 +81,25 @@ addEventListener("submit", function(e) {
         }
     }
 
+    // Wait a bit before searching for any alert.
+    this.setTimeout(function() {
+        // Changing the focus after any bootstrap alert.
+        let anyAlert = this.document.querySelectorAll(".alert");
+        if (anyAlert) {
+            const anyAlertLen = anyAlert.length;
+            let i = 0;
+            while (i < anyAlertLen) {
+                anyAlert[i].addEventListener("closed.bs.alert", function() {
+                    // Get any form obj (assuming that all pages contains forms).
+                    let anyFormObj = document.querySelector("form");
+                    if (anyFormObj) {
+                        anyFormObj[0].focus();
+                    }
+                });
+                i++;
+            }
+        }
+    }, 1000);
 });
 
 // Catch any Eye Icon.

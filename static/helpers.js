@@ -98,10 +98,10 @@ function showAlertAboveTagName(message, alertId, tagNameToInsertAbove) {
     let testExist = document.getElementById(alertId);
     let sameAlert = bootstrap.Alert.getOrCreateInstance('#' + alertId);
     if (sameAlert && testExist) {
-        sameAlert.close();
         addEventListener("closed.bs.alert", function() {
             showAlertAboveTagName(message, alertId, tagNameToInsertAbove);
         });
+        sameAlert.close();
     }
     // Create div for alert.
     let alertDiv = document.createElement("div");
