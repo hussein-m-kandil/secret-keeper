@@ -1,7 +1,9 @@
 # SECRET KEEPER
+<br/>
 
 
 ### Video Demo:  ? ? ?
+<br/>
 
 
 ### Overview
@@ -15,6 +17,7 @@ There are also some limitations on naming the Secrets which is Secret's name can
 - be repeated, i.e. Two Secrets Can't have same name.
 Users can freely see, rename and delete their Secrets as they want. <br/>
 Log in session time is exactly 20 minutes and the user will be logged out automatically for security reasons. <br/>
+<br/>
 
 
 
@@ -32,6 +35,7 @@ Once the registration process finished correctly and while the user is logged in
    - Click the Rename button to change the selected secret's name under the same naming rules.
 3. Log-in Password page: <br/>
    - This is an optional page for changing the log-in password for current logged in user.
+<br/>
 
 
 
@@ -74,9 +78,11 @@ This is a Python3-Flask based project, and the project's files under the root di
 5. "helpers.py": Has just two functions:<br/>
    - "login_required": For checking that the user is already logged in before executing any view function that required logged in user.
    - "flash_checker": For checking if there are flash messages with the current route, in order to render them for the user.
+<br/>
 
 The project's files under the asset's directory are: <br/>
 - This directory is for the resources of any multimedia material but currently it has only the source files for 'favicon.ico'.
+<br/>
 
 The project's files under the template's directory are: <br/>
 1. "layout.html": This file has all the building blocks of all pages that should be the same across all pages (e.g. navigation bar).
@@ -85,6 +91,7 @@ The project's files under the template's directory are: <br/>
 4. "password.html": This file for login password page, where users can change their current passwords.
 5. "register.html": The registration form page, where users can register for new accounts.
 6. "login.html": This page files for the log in form, where users can log into their accounts.
+<br/>
 
 The project files under the static directory are:
 1. "favicon.ico": This is the icon that appears in the top bar of browser's window.
@@ -116,6 +123,7 @@ The project files under the static directory are:
     - Regular Expressions Objects with patterns for validating names, password and sanitizing strings. <br/>
 
 <sub>I wrote those files with their functions in order to avoid redundancy as much as i can in JavaScript code. </sub>
+<br/>
 
 
 
