@@ -1,10 +1,12 @@
 # SECRET KEEPER
 <br/>
 
+---
 
 ### Video Demo:  ? ? ?
 <br/>
 
+---
 
 ### Overview
 A web app for generating random passwords (Secrets) and keeping them for the user. <br/>
@@ -129,5 +131,5 @@ The project files under the static directory are:
 
 **This was Secret keeper, my final project for CS50: Introduction to Computer Science 2022.** <br/>
 
-###### <span style="margin: auto">Copyright &copy; 2022 | Hussein Kandil</span>
+<sub align="center">Copyright &copy; 2022 | Hussein Kandil</sub>
 
