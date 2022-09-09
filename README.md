@@ -123,12 +123,12 @@ The project files under the static directory are:
     - Show alerts for the user above specific element in the page and under specific call from the other functions.
     - Regular Expressions Objects with patterns for validating names, password and sanitizing strings. <br/>
 
-***I wrote those files with their functions in order to avoid redundancy as much as i can in JavaScript code.***
+<sub>***I wrote those files with their functions in order to avoid redundancy as much as i can in JavaScript code.***</sub>
 
 <hr/>
 
 
-####**This was Secret keeper, my final project for CS50: Introduction to Computer Science 2022.** <br/>
+#### **This was Secret keeper, my final project for CS50: Introduction to Computer Science 2022.** <br/>
 <br/>
 
 
