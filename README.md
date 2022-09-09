@@ -21,7 +21,7 @@ Users can freely see, rename and delete their Secrets as they want. <br/>
 Log in session time is exactly 20 minutes and the user will be logged out automatically for security reasons. <br/>
 <br/>
 
-
+<hr/>
 
 ### Usage
 Once the registration process finished correctly and while the user is logged in, at that time the most important pages are: <br/>
