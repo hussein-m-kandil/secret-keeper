@@ -129,10 +129,8 @@ The project files under the static directory are:
 <hr/>
 <br/>
 
-
 #### <p align="center">**This was Secret keeper, my final project for CS50: Introduction to Computer Science 2022.** </p><br/>
 <br/>
-
 
 <p align="center">Copyright &copy; 2022 | Hussein Kandil</p>
 
