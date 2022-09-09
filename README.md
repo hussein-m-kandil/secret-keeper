@@ -1,6 +1,5 @@
-# SECRET KEEPER
+# <p align="center">SECRET KEEPER
 
-<hr/>
 
 
 ### Video Demo:  ? ? ?
