@@ -4,6 +4,7 @@
 
 ### Video Demo:  ? ? ?
 
+
 <hr/>
 
 
@@ -18,6 +19,7 @@ There are also some limitations on naming the Secrets which is Secret's name can
 - be repeated, i.e. Two Secrets Can't have same name.
 Users can freely see, rename and delete their Secrets as they want. <br/>
 Log in session time is exactly 20 minutes and the user will be logged out automatically for security reasons. <br/>
+
 
 <hr/>
 
@@ -36,6 +38,7 @@ Once the registration process finished correctly and while the user is logged in
    - Click the Rename button to change the selected secret's name under the same naming rules.
 3. Log-in Password page: <br/>
    - This is an optional page for changing the log-in password for current logged in user.
+
 
 <hr/>
 
@@ -125,6 +128,7 @@ The project files under the static directory are:
 
 <sub>***I wrote those files with their functions in order to avoid redundancy in JavaScript code as much as i can.***</sub>
 <br/>
+
 
 <hr/>
 <br/>
