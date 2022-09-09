@@ -1,8 +1,8 @@
 # SECRET KEEPER
 
-#### Video Demo: ? ? ?
+### Video Demo: ? ? ?
 
-#### Overview
+### Overview
 A web app for generating random passwords (Secrets) and keeping them for the user.<br/>
 Users can freely choose the types of character that the secret should have among Upper/Lowercase letters, Punctuations (Symbols) and Digits (Numbers).<br/>
 Although the user can choose the types of characters freely, there are limitaions on the size (length) of the secret, Though the maximum length with secrets that consists of Digits only is 10 characters, Otherwise, the size can reach 32 characters, and all types of secrets has a minimum size of 4 characters.<br/>
@@ -14,7 +14,7 @@ There is also some limitations on naming the Secrets which is Secret's name can'
 Users can freely see, rename and delete their Secrets as they want.
 Log in session time is exactly 20 minutes and the user will be logged out automatically for security reasons.
 
-#### Usage
+### Usage
 Once the registeration process finished correctly and while the user is logged in, at that time the most important pages are:
     1. Generate Secret page:
        - Choose the types of characters that you wan't to include them in the secret.
@@ -29,7 +29,7 @@ Once the registeration process finished correctly and while the user is logged i
     3. Log-in Password page:
        - This is optional page for changin the log-in password for current logged in user.
 
-#### Files
+### Files
 This is a Python3-Flask based project, and the project's files under the root directory are:
     1. "secret_keeper.db":
        - This is the database file for the project which based on 'sqlite3' database.
@@ -109,9 +109,9 @@ The project file's under the static directory are:
         - Show alerts for the user above specific element in the page and under specific call from the other functions.
         - Reqular Expressions Objects with patterns for validating names, password and sanitizing strings.
 
-    I wrote this files with their functions in order to avoid redundency as much as i can in JavaScript code.
+<sub>I wrote this files with their functions in order to avoid redundency as much as i can in JavaScript code.</sub>
 
-This was Secret keeper, my final project for CS50: Introduction to Computer Science 2022.
+**This was Secret keeper, my final project for CS50: Introduction to Computer Science 2022.**
 
 
 
