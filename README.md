@@ -1,4 +1,4 @@
-# <p align="center">SECRET KEEPER
+# <p align="center">SECRET KEEPER</p>
 
 
 
@@ -123,12 +123,12 @@ The project files under the static directory are:
     - Show alerts for the user above specific element in the page and under specific call from the other functions.
     - Regular Expressions Objects with patterns for validating names, password and sanitizing strings. <br/>
 
-<sub>***I wrote those files with their functions in order to avoid redundancy as much as i can in JavaScript code.***</sub>
+<sub>***I wrote those files with their functions in order to avoid redundancy in JavaScript code as much as i can.***</sub>
 
 <hr/>
 
 
-#### **This was Secret keeper, my final project for CS50: Introduction to Computer Science 2022.** <br/>
+#### <p align="center">**This was Secret keeper, my final project for CS50: Introduction to Computer Science 2022.** </p><br/>
 <br/>
 
 
