@@ -80,11 +80,11 @@ This is a Python3-Flask based project, and the project's files under the root di
    - "flash_checker": For checking if there are flash messages with the current route, in order to render them for the user.
 <br/>
 
-The project's files under the asset's directory are: <br/>
+The project's files under the assets directory are: <br/>
 - This directory is for the resources of any multimedia material but currently it has only the source files for 'favicon.ico'.
 <br/>
 
-The project's files under the template's directory are: <br/>
+The project's files under the templates directory are: <br/>
 1. "layout.html": This file has all the building blocks of all pages that should be the same across all pages (e.g. navigation bar).
 2. "index.html": The main page and the secrets page at the same time, the place where the user can see all saved secrets and modify them by deleting the secret or renaming it.
 3. "gen_password.html": HTML page for the secret (password) generation functionalities and saving the generated secrets.
