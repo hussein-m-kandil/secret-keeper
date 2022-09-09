@@ -1,12 +1,14 @@
 # SECRET KEEPER
 <br/>
 
-------
+<hr/>
+
 
 ### Video Demo:  ? ? ?
 <br/>
 
-------
+<hr/>
+
 
 ### Overview
 A web app for generating random passwords (Secrets) and keeping them for the user. <br/>
@@ -22,6 +24,7 @@ Log in session time is exactly 20 minutes and the user will be logged out automa
 <br/>
 
 <hr/>
+
 
 ### Usage
 Once the registration process finished correctly and while the user is logged in, at that time the most important pages are: <br/>
