@@ -1,11 +1,9 @@
 # SECRET KEEPER
-<br/>
 
 <hr/>
 
 
 ### Video Demo:  ? ? ?
-<br/>
 
 <hr/>
 
@@ -21,7 +19,6 @@ There are also some limitations on naming the Secrets which is Secret's name can
 - be repeated, i.e. Two Secrets Can't have same name.
 Users can freely see, rename and delete their Secrets as they want. <br/>
 Log in session time is exactly 20 minutes and the user will be logged out automatically for security reasons. <br/>
-<br/>
 
 <hr/>
 
@@ -40,8 +37,8 @@ Once the registration process finished correctly and while the user is logged in
    - Click the Rename button to change the selected secret's name under the same naming rules.
 3. Log-in Password page: <br/>
    - This is an optional page for changing the log-in password for current logged in user.
-<br/>
 
+<hr/>
 
 
 ### Files
@@ -128,11 +125,13 @@ The project files under the static directory are:
     - Regular Expressions Objects with patterns for validating names, password and sanitizing strings. <br/>
 
 <sub>I wrote those files with their functions in order to avoid redundancy as much as i can in JavaScript code. </sub>
-<br/>
 
+<hr/>
 
 
 **This was Secret keeper, my final project for CS50: Introduction to Computer Science 2022.** <br/>
+<br/>
+
 
 <p align="center">Copyright &copy; 2022 | Hussein Kandil</p>
 
