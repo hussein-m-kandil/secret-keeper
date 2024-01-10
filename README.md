@@ -1,12 +1,12 @@
 # <p align="center">SECRET KEEPER</p>
 
-
-
-### Video Demo: https://youtu.be/wrvHxPhv2wQ
-
+### Video Demo: [Secret Keeper Demo](https://youtu.be/wrvHxPhv2wQ)
 
 <hr/>
 
+### URL: [Secret Keeper](https://husseinmkandil.pythonanywhere.com/login)
+
+<hr/>
 
 ### Overview
 
@@ -17,18 +17,19 @@ Users can freely choose the types of character that the secret should have among
 Although the user can choose the types of characters freely, there are limitations on the size (length) of the secret, Though the maximum length with secrets that consists of Digits only is 10 characters, Otherwise, the size can reach 32 characters, and all types of secrets has a minimum size of 4 characters. <br/>
 
 There are also some limitations on naming the Secrets which are: <br/>
+
 - Secret's name can't start with any type of character other than letters.
 - Or contain any Punctuations or Symbols.
 - And it is not allowed for a secret's name to be repeated, i.e. Two Secrets Can't have same name.
-Users can freely see, rename and delete their Secrets as they want. <br/>
-Log in session time is exactly 20 minutes and the user will be logged out automatically for security reasons. <br/>
-
+  Users can freely see, rename and delete their Secrets as they want. <br/>
+  Log in session time is exactly 20 minutes and the user will be logged out automatically for security reasons. <br/>
 
 <hr/>
 
-
 ### Usage
+
 Once the registration process finished correctly and while the user is logged in, at that time the most important pages are: <br/>
+
 1. Generate Secret page: <br/>
    - Choose the types of characters that you want to include in the secret.
    - Move the slider to decide the length of the secret.
@@ -42,12 +43,12 @@ Once the registration process finished correctly and while the user is logged in
 3. Log-in Password page: <br/>
    - This is an optional page for changing the log-in password for current logged in user.
 
-
 <hr/>
 
-
 ### Files
+
 This is a Python3-Flask based project, and the project's files under the root directory are:
+
 1. "secret_keeper.db": <br/>
    - This is the database file for the project which is based on 'sqlite3' database.
    - Has one schema with two tables: users and secrets.
@@ -85,59 +86,61 @@ This is a Python3-Flask based project, and the project's files under the root di
 5. "helpers.py": Has just two functions:<br/>
    - "login_required": For checking that the user is already logged in before executing any view function that required logged in user.
    - "flash_checker": For checking if there are flash messages with the current route, in order to render them for the user.
-<br/>
+     <br/>
 
 The project's files under the assets directory are: <br/>
+
 - This directory is for the resources of any multimedia material but currently it has only the source files for 'favicon.ico'.
-<br/>
+  <br/>
 
 The project's files under the templates directory are: <br/>
+
 1. "layout.html": This file has all the building blocks of all pages that should be the same across all pages (e.g. navigation bar).
 2. "index.html": The main page and the secrets page at the same time, the place where the user can see all saved secrets and modify them by deleting the secret or renaming it.
 3. "gen_password.html": HTML page for the secret (password) generation functionalities and saving the generated secrets.
 4. "password.html": This file for login password page, where users can change their current passwords.
 5. "register.html": The registration form page, where users can register for new accounts.
 6. "login.html": This page files for the log in form, where users can log into their accounts.
-<br/>
+   <br/>
 
 The project files under the static directory are:
+
 1. "favicon.ico": This is the icon that appears in the top bar of browser's window.
 2. "styles.css": Although all pages are styled with 'Bootstrap', this file has some specific CSS styling customizations for some elements in the pages.
 3. "main.js": This is the main JavaScript file the control all of the front-end interaction functionalities for all pages of the application, but each page has separated JS file that where i write the functions that control the functionalities of the page and these functions are imported in this 'main.js' file. And there are some functionalities that have been controlled directly for this main file which are:
-    - Calling the flask route that clears the flash messages.
-    - Setting the focus back to the first element in the page after closing any alert message.
-    - Calling specific functions for specific page's forms submissions.
-    - Toggling the password's eye icon on/off in order to reveal/hide the password for the user.
-    - Fetching the generated password by calling the function that is responsible for this role.
-    - Disabling all submit buttons until all inputs to be fulfilled.
+   - Calling the flask route that clears the flash messages.
+   - Setting the focus back to the first element in the page after closing any alert message.
+   - Calling specific functions for specific page's forms submissions.
+   - Toggling the password's eye icon on/off in order to reveal/hide the password for the user.
+   - Fetching the generated password by calling the function that is responsible for this role.
+   - Disabling all submit buttons until all inputs to be fulfilled.
 4. "register_validation.js": The file that contains one function called 'registerValidation' that has all the procedures for validating all of the data that users entered for registration like: username & password, and generates error messages and alerts if there is something wrong in the inputted data, and submit the registration form for the user in case that everything is Ok.
 5. "login_validation.js": This file is written in a similar way as 'register_validation.js' but this file validates the user input's data for log in process, and has only one function i.e. 'loginValidation'.
 6. "change_pass_validation.js": This file is working in a similar way as login/registration validation files, but this time for changing the user's password, and has also one function 'changePassValidation' that validates the password under the same rules as 'register_validation.js' and also submit the new password for the user in case that everything is Ok.
 7. "password_gen_handler.js": This file contains three functions i.e. 'passGenHandler', 'getGenPass' and 'saveSecretByValidName', These functions serve the functionalities for:
-    - Disabling the generate form if the user unchecked all character's types and change the maximum length for the secret if the user chosen only Numbers digits secrets to max of 10 characters and back it to 32 otherwise.
-    - Generating new secrets (passwords) for the user under the demanded characters types.
-    - Saving the new secret for the user under after validating the name of the secret.
+   - Disabling the generate form if the user unchecked all character's types and change the maximum length for the secret if the user chosen only Numbers digits secrets to max of 10 characters and back it to 32 otherwise.
+   - Generating new secrets (passwords) for the user under the demanded characters types.
+   - Saving the new secret for the user under after validating the name of the secret.
 8. "secrets_handler.js": This file has 'showSecretVal', 'renameSecretHandler', 'renSecret', 'deleteSecretHandler' and 'delSecret', These functions working under the Secrets page and serve the functionalities for:
-    - Toggling between show/hide the value of the chosen saved secret from the select menu.
-    - Renaming the secret for the user by submitting the rename secret form after validating the new name.
-    - Deleting secret after informing the user that this step can't be reversed and the deleted secret will never be back again.
-    - Displaying and removing any warning messages that may be generated with the deleting/renaming process.
+   - Toggling between show/hide the value of the chosen saved secret from the select menu.
+   - Renaming the secret for the user by submitting the rename secret form after validating the new name.
+   - Deleting secret after informing the user that this step can't be reversed and the deleted secret will never be back again.
+   - Displaying and removing any warning messages that may be generated with the deleting/renaming process.
 9. "helpers.js": This file has 'errMessageGen', 'errMessageAnimy', 'handleEmptyInputs', 'showAlertAboveTagName', 'usernameRegex', 'passwordRegex', 'sanitizerRegex', 'isEmptyInput', 'handleValidationErr' and 'secretNameRegex', These functions working with all the JavaScript files and its functions and serves the functionalities for:
-    - Generating error messages and alerts for the other validation functions.
-    - Animating any message under call from the other functions to inform the user that the user's error still exists.
-    - Handling and figuring out if there are any submitted empty functions in case there is one.
-    - Show alerts for the user above specific element in the page and under specific call from the other functions.
-    - Regular Expressions Objects with patterns for validating names, password and sanitizing strings. <br/>
+   - Generating error messages and alerts for the other validation functions.
+   - Animating any message under call from the other functions to inform the user that the user's error still exists.
+   - Handling and figuring out if there are any submitted empty functions in case there is one.
+   - Show alerts for the user above specific element in the page and under specific call from the other functions.
+   - Regular Expressions Objects with patterns for validating names, password and sanitizing strings. <br/>
 
-<sub>***I wrote those files with their functions in order to avoid redundancy in JavaScript code as much as i can.***</sub>
+<sub>**_I wrote those files with their functions in order to avoid redundancy in JavaScript code as much as i can._**</sub>
 <br/>
-
 
 <hr/>
 <br/>
 
 #### <p align="center">**This was Secret keeper, my final project for CS50: Introduction to Computer Science 2022.** </p><br/>
+
 <br/>
 
 <p align="center">Copyright &copy; 2022 | Hussein Kandil</p>
-
